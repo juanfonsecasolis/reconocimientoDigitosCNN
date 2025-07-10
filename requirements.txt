@@ -1,0 +1,9 @@
+python-setuptools
+python-support
+python-pydot 
+graphviz
+theano
+keras
+matplotlib
+h5py
+gradientzoo
