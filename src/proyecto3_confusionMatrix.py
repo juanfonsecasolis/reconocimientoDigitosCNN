@@ -16,7 +16,7 @@ C = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
 def parseArgs():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default='model.json')
+		help='JSON file containing the pretrained model',default='./models/model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
                 help='H5 file containing the pretrained weights',default='model.h5') 
 
@@ -56,11 +56,11 @@ def computeAndPrintMetrics():
 	minSpecificity = 999
 	minPrecision = 999
 	maxSensitivity = 0
-        maxSpecificity = 0
-        maxPrecision = 0
+	maxSpecificity = 0
+	maxPrecision = 0
 
 
-        for i in range(NUM_DIGITS_MNIST): 	
+	for i in range(NUM_DIGITS_MNIST): 	
 		print('* Category '+str(i)+': ',end='')
 		TP = C[i][i] # TP = A[0,0] = C[i,i] 
 		FP = 0
@@ -94,12 +94,13 @@ def computeAndPrintMetrics():
 		FPS.append(FP)
 		FNS.append(FN)
 		TNS.append(TN)
+		
 		minSensitivity = min(minSensitivity, sensitivity)
-	        minSpecificity = min(minSpecificity, specificity)
-        	minPrecision = min(minPrecision, precision)
+		minSpecificity = min(minSpecificity, specificity)
+		minPrecision = min(minPrecision, precision)
 		maxSensitivity = max(maxSensitivity, sensitivity)
-                maxSpecificity = max(maxSpecificity, specificity)
-                maxPrecision = max(maxPrecision, precision)
+		maxSpecificity = max(maxSpecificity, specificity)
+		maxPrecision = max(maxPrecision, precision)
 
 	mTP = np.mean(TPS)
 	mFP = np.mean(FPS)
@@ -108,19 +109,19 @@ def computeAndPrintMetrics():
 
 	print('\nAverage:')
 	print('TP=' + str(mTP) + ', ', end='')
-        print('FP=' + str(mFP) + ', ', end='')
-        print('TN=' + str(mTN) + ', ', end='')
-        print('FN=' + str(mFN) + ', ', end='')
-        print('')
-        calculateAndPrintAdvancedMetrics(mTP, mFP, mTN, mFN)
+	print('FP=' + str(mFP) + ', ', end='')
+	print('TN=' + str(mTN) + ', ', end='')
+	print('FN=' + str(mFN) + ', ', end='')
+	print('')
+	calculateAndPrintAdvancedMetrics(mTP, mFP, mTN, mFN)
 
 	print('Min/max')
 	print('Min sensitivity = ' + str(minSensitivity))
 	print('Min specificity = ' + str(minSpecificity))
 	print('Min precision = ' + str(minPrecision))
 	print('Max sensitivity = ' + str(maxSensitivity))
-        print('Max specificity = ' + str(maxSpecificity))
-        print('Max precision = ' + str(maxPrecision))
+	print('Max specificity = ' + str(maxSpecificity))
+	print('Max precision = ' + str(maxPrecision))
 
 def calculateAndPrintAdvancedMetrics(TP,FP,TN,FN):
 	sensitivity = TP/(TP+FN)
@@ -133,10 +134,9 @@ def calculateAndPrintAdvancedMetrics(TP,FP,TN,FN):
 	return sensitivity, specificity, precision
 
 def main():
-        [X_train, X_test, Y_train, Y_test] = prepareTrainingData()
-
+	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 	[modelpath, weightspath] = parseArgs()
-        model = loadModel(modelpath, weightspath)
+	model = loadModel(modelpath, weightspath)
 
 	# evaluate loaded model on test data
 	model.compile(loss='categorical_crossentropy',
@@ -151,4 +151,4 @@ def main():
 Main
 '''
 if '__main__' == __name__:
-        main()
+	main()

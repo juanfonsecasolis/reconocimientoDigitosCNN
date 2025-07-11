@@ -21,10 +21,10 @@ K.set_image_data_format('channels_first')
 
 def tryLoad(filepath):
 	try:
-                fileOpened = open(filepath, 'r')
-        except IOError:
-                print 'Error: ' + filepath +  ' path unexistent'
-                exit(1)
+		fileOpened = open(filepath, 'r')
+	except IOError:
+		print('Error: ' + filepath +  ' path unexistent')
+		exit(1)
 	return fileOpened
 
 def loadModel(modelpath, weightspath):
@@ -41,10 +41,9 @@ def loadModel(modelpath, weightspath):
 
 def getTrainImageMNIST(i,X_test,Y_test):
 	# one channel, 28x28 pixel images
-        B, A = [], []
-        A.append(np.array([X_test[i]]))
-        B.append(np.array([Y_test[i]]))
-	
+	B, A = [], []
+	A.append(np.array([X_test[i]]))
+	B.append(np.array([Y_test[i]]))
 	if DEBUG:
 		printImage(A[0][0][0])
 	return B, A
@@ -84,33 +83,33 @@ def executeBenchmark(model, X_test, Y_test):
 		times.append(elapsed)
 		if(np.sum(np.subtract(desired, obtained)) < 0.5):
 			TP += 1 
-	print 'Accuracy: %f' % (TP/I)
-	print 'Averaged time (%i samples): %f (ms)' % (I, np.mean(times))
+	print('Accuracy: %f' % (TP/I))
+	print('Averaged time (%i samples): %f (ms)' % (I, np.mean(times)))
 
 def predict(model, image, verbose=True):
-        start = int(round(time.time() * 1000))
-        result = model.predict(image)
-        end = int(round(time.time() * 1000))
+	start = int(round(time.time() * 1000))
+	result = model.predict(image)
+	end = int(round(time.time() * 1000))
 	elapsed = end-start
-        if verbose:
-		print 'Output:'
-		print result
-		print 'Classification time: %d (ms)' % elapsed
+	if verbose:
+		print('Output:')
+		print(result)
+		print('Classification time: %d (ms)' % elapsed)
 	return elapsed, result 
 
-
 def main():
-        [X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 
+	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 	[modelpath, weightspath, imagepath] = parseArgs()
 	model = loadModel(modelpath, weightspath)
-        # evaluate loaded model on test data
-        model.compile(loss='categorical_crossentropy',
-        	optimizer='adam',
-        	metrics=['accuracy'])
+
+	# evaluate loaded model on test data
+	model.compile(loss='categorical_crossentropy',
+		optimizer='adam',
+		metrics=['accuracy'])
 
 	if('none'==imagepath):
-		print 'Executing benchmark...'
+		print('Executing benchmark...')
 		executeBenchmark(model, X_test, Y_test)
 	else:
 	
@@ -123,4 +122,4 @@ def main():
 Main
 '''
 if '__main__' == __name__:
-        main()
+    main()

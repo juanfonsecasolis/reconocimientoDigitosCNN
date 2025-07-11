@@ -69,44 +69,48 @@ def prepareTrainingData():
 	return X_train, X_test, Y_train, Y_test
 
 def createModelA():
-        '''
-	  Lecun structure (LeNet-5)
-	  Code: http://www.pyimagesearch.com/2016/08/01/lenet-convolutional-neural-network-in-python/
-	  Mentioned by:  Ghaffari-Sharifian structure
+	'''
+	Lecun structure (LeNet-5)
+	Code: http://www.pyimagesearch.com/2016/08/01/lenet-convolutional-neural-network-in-python/
+	Mentioned by:  Ghaffari-Sharifian structure
 	'''
 	model = Sequential()
-        # layer 1
-        model.add(Convolution2D(
-                20, # number of convolution filters to use
-                (5,5), # number of rows, columns in each convolution kernel
-                input_shape=input_shape,
-                name = 'conv1'
-        ))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
-        # layer 2
-        model.add(Convolution2D(
-                50, # number of convolution filters to use
-                (5,5), # number of rows, columns in each convolution kernel
-		padding="same",
-                name = 'conv2'
-        ))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
-        # layer 3
+
+	# layer 1
+	model.add(Convolution2D(
+			20, # number of convolution filters to use
+			(5,5), # number of rows, columns in each convolution kernel
+			input_shape=input_shape,
+			name = 'conv1'
+	))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+
+	# layer 2
+	model.add(Convolution2D(
+			50, # number of convolution filters to use
+			(5,5), # number of rows, columns in each convolution kernel
+	padding="same",
+			name = 'conv2'
+	))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+
+    # layer 3
 	model.add(Flatten())        
 	model.add(Dense(500))
-        model.add(Activation('relu'))
-        # layer 4
-        model.add(Dense(nb_classes))
-        model.add(Activation('softmax'))
+	model.add(Activation('relu'))
 
-        # compile and return
-        model.compile(
-              	loss='categorical_crossentropy',
-                optimizer='adadelta', # an adaptive learning rate method
-                metrics=['accuracy'])
-        return model
+	# layer 4
+	model.add(Dense(nb_classes))
+	model.add(Activation('softmax'))
+
+	# compile and return
+	model.compile(
+			loss='categorical_crossentropy',
+			optimizer='adadelta', # an adaptive learning rate method
+			metrics=['accuracy'])
+	return model
 
 def createModelC():
 	'''
@@ -153,49 +157,55 @@ def createModelC():
 
 def createModelB():
 	'''
-	  Cîrstea-Likforman structure
+	Cîrstea-Likforman structure
 	'''
-        model = Sequential()
+	model = Sequential()
+
 	# layer 1
-        model.add(Convolution2D(
-                32, # number of convolution filters to use
-                (3,3), # number of rows, columns in each convolution kernel
-                input_shape=input_shape,
-                name = 'conv1'
-        ))
-        model.add(Activation('relu'))
+	model.add(Convolution2D(
+			32, # number of convolution filters to use
+			(3,3), # number of rows, columns in each convolution kernel
+			input_shape=input_shape,
+			name = 'conv1'
+	))
+	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
+
 	# layer 2
 	model.add(Convolution2D(
-                64, # number of convolution filters to use
-                (3,3), # number of rows, columns in each convolution kernel
-                name = 'conv2'
-        ))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2,2)))
+			64, # number of convolution filters to use
+			(3,3), # number of rows, columns in each convolution kernel
+			name = 'conv2'
+	))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2,2)))
+
 	# layer 3
 	model.add(Convolution2D(
-                128, # number of convolution filters to use
-                (3,3), # number of rows, columns in each convolution kernel
-                name = 'conv3'
-        ))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2,2)))
+			128, # number of convolution filters to use
+			(3,3), # number of rows, columns in each convolution kernel
+			name = 'conv3'
+	))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2,2)))
 	model.add(Flatten())
+
 	# fully connected layer
-        model.add(Dense(625))
+	model.add(Dense(625))
 	model.add(Activation('relu'))
 	model.add(Dropout(0.5))
+	
 	# softmax layer
-        model.add(Dense(nb_classes))
-        model.add(Activation('softmax'))
+	model.add(Dense(nb_classes))
+	model.add(Activation('softmax'))
 
-        # compile and return
-        model.compile(
-                loss='categorical_crossentropy', # used to detect category labels
-                optimizer='adadelta', # an adaptive learning rate method
-                metrics=['accuracy'])
-        return model	
+	# compile and return
+	model.compile(
+		loss='categorical_crossentropy', # used to detect category labels
+		optimizer='adadelta', # an adaptive learning rate method
+		metrics=['accuracy'])
+	
+	return model	
 
 def loadZooWeights(model):
 	# Blocker: https://github.com/gradientzoo/python-gradientzoo/issues/1
@@ -206,12 +216,12 @@ def loadZooWeights(model):
 			print('Found and loaded latest model weights from gradientzoo')
 	except NotFoundError:
 		print('No existing model weights found, training for the first time')
-	except Exception, e:
-		if 'You are trying to load' in str(e):
-		        if raw_input('Invalid weights found, continue? ')[0] != 'y':	
-				sys.exit(1)
-    		else:
-		        raise e
+	except:
+		if 'You are trying to load' in str(e) and raw_input('Invalid weights found, continue? ')[0] != 'y':	
+			sys.exit(1)
+		else:
+			raise e
+		
 	return zoo
 
 def trainWeights(model, X_train, X_test, Y_train, Y_test, nEpochs, myCallbacks):
@@ -256,7 +266,7 @@ def main():
 	elif 'B'==modelType:
 		model = createModelB()
 	else:
-		print 'Error: you specified an unexistent model type'
+		print('Error: you specified an unexistent model type')
 		exit()
 
 	# prepare training data
@@ -270,10 +280,10 @@ def main():
 
 	# train model and plot error
 	trainWeights(model, X_train, X_test, Y_train, Y_test, nEpochs, callbacks) 
-        plt.plot(callbacks[0].losses)
-        plt.xlabel('Batch')
-        plt.ylabel('Loss')
-        plt.show()
+	plt.plot(callbacks[0].losses)
+	plt.xlabel('Batch')
+	plt.ylabel('Loss')
+	plt.show()
 
 	# save model
 	saveModel(model, modelpath, weightspath)

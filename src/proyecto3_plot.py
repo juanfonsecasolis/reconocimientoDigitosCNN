@@ -27,7 +27,7 @@ from src.proyecto3_evaluate import *
 from scipy.misc import imsave
 import matplotlib.pylab as plt
 
-input_img = '../datos/proyecto3/cinco.png'
+input_img = '../data/cinco.png'
 
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -52,8 +52,8 @@ def make_mosaic(imgs, nrows, ncols, border=1):
     return mosaic
 
 # 1) plot layers
-model = loadModel('model.json','model.h5')
-plot_model(model, to_file='model.png')
+model = loadModel('./models/model.json','model.h5')
+plot_model(model, to_file='./doc/model.png')
 
 # 2) plot convolutional results
 iLayer = 0

@@ -1,9 +1,10 @@
-python-setuptools
-python-support
-python-pydot 
+setuptools
+scipy
+gradientzoo
+#support
+#pydot 
 graphviz
-theano
 keras
 matplotlib
 h5py
-gradientzoo
+#theano
