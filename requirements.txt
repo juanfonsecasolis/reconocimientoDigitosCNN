@@ -1,6 +1,6 @@
 setuptools
 scipy
-gradientzoo
+gradientzoo==67.7.1
 #support
 #pydot 
 graphviz
