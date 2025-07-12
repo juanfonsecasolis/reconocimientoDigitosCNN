@@ -11,21 +11,20 @@
 # - https://keras.io/callbacks/
 # - https://keunwoochoi.wordpress.com/2016/07/16/keras-callbacks/
 
-from gradientzoo import KerasGradientzoo, NotFoundError
+#from gradientzoo import KerasGradientzoo, NotFoundError
 from keras.datasets import mnist
-from keras.utils import np_utils
 from keras.models import Sequential
-from keras.layers.convolutional import Convolution2D, MaxPooling2D
-from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
 import sys
 import argparse
 from keras import backend as K
 from keras import callbacks
 import numpy as np
 import matplotlib.pylab as plt
+from keras.utils import to_categorical
 
 # bypass the certificate error on the KerasGradientZoo
-import os, ssl
+import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # Constants
@@ -64,8 +63,8 @@ def prepareTrainingData():
 		print('X_train shape:', X_train.shape)
 		print(X_train.shape[0], 'train samples')
 		print(X_test.shape[0], 'test samples')
-	Y_train = np_utils.to_categorical(y_train, nb_classes)
-	Y_test = np_utils.to_categorical(y_test, nb_classes)
+	Y_train = to_categorical(y_train, nb_classes)
+	Y_test = to_categorical(y_test, nb_classes)
 	return X_train, X_test, Y_train, Y_test
 
 def createModelA():
@@ -216,11 +215,10 @@ def loadZooWeights(model):
 			print('Found and loaded latest model weights from gradientzoo')
 	except NotFoundError:
 		print('No existing model weights found, training for the first time')
-	except:
+	except Exception as e:
 		if 'You are trying to load' in str(e) and raw_input('Invalid weights found, continue? ')[0] != 'y':	
 			sys.exit(1)
-		else:
-			raise e
+		raise e
 		
 	return zoo
 

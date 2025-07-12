@@ -1,6 +1,7 @@
-setuptools
+np_utils
+#setuptools==67.7.1
 scipy
-gradientzoo==67.7.1
+#gradientzoo
 #support
 #pydot 
 graphviz
@@ -8,3 +9,4 @@ keras
 matplotlib
 h5py
 #theano
+tensorflow
