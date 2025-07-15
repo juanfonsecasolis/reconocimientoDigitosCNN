@@ -15,7 +15,6 @@
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
-import sys
 import argparse
 from keras import backend as K
 from keras import callbacks
@@ -59,12 +58,15 @@ def prepareTrainingData():
 	X_test = X_test.astype('float32')
 	X_train /= 255
 	X_test /= 255
+	
 	if DEBUG:
 		print('X_train shape:', X_train.shape)
 		print(X_train.shape[0], 'train samples')
 		print(X_test.shape[0], 'test samples')
+
 	Y_train = to_categorical(y_train, nb_classes)
 	Y_test = to_categorical(y_test, nb_classes)
+
 	return X_train, X_test, Y_train, Y_test
 
 def createModelA():
@@ -77,20 +79,20 @@ def createModelA():
 
 	# layer 1
 	model.add(Convolution2D(
-			20, # number of convolution filters to use
-			(5,5), # number of rows, columns in each convolution kernel
-			input_shape=input_shape,
-			name = 'conv1'
+		20, # number of convolution filters to use
+		(5,5), # number of rows, columns in each convolution kernel
+		input_shape=input_shape,
+		name = 'conv1'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
 
 	# layer 2
 	model.add(Convolution2D(
-			50, # number of convolution filters to use
-			(5,5), # number of rows, columns in each convolution kernel
+		50, # number of convolution filters to use
+		(5,5), # number of rows, columns in each convolution kernel
 	padding="same",
-			name = 'conv2'
+		name = 'conv2'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
@@ -106,9 +108,9 @@ def createModelA():
 
 	# compile and return
 	model.compile(
-			loss='categorical_crossentropy',
-			optimizer='adadelta', # an adaptive learning rate method
-			metrics=['accuracy'])
+		loss='categorical_crossentropy',
+		optimizer='adadelta', # an adaptive learning rate method
+		metrics=['accuracy'])
 	return model
 
 def createModelC():
@@ -119,8 +121,8 @@ def createModelC():
 	model.add(Convolution2D(
 		nb_filters, # number of convolution filters to use
 		(nb_conv, nb_conv), # number of rows, columns in each convolution kernel
-        	padding='valid',
-        	input_shape=input_shape,
+        padding='valid',
+        input_shape=input_shape,
 		name = 'conv1'
 	))
 	model.add(Activation('relu'))
@@ -130,13 +132,17 @@ def createModelC():
 		name = 'conv2'
 	))
 	model.add(Activation('relu'))
+	
 	# MaxPooling: reduce the number of parameter in the next layer by keeping the 2 
 	# maximum values of each filter in the current layer
 	model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
+	
 	# Dropout: this avoids overfitting by disabling cerain networks during the training
 	model.add(Dropout(0.25))
+	
 	# Flatten: this flats a 2D input into a 1D array
 	model.add(Flatten())
+	
 	# Dense: this creates a layer where each unit is fully connected to the next layer
 	# (has entries to all the nodes in the next layer), the parameter is the output size of
 	# the layer
@@ -152,6 +158,7 @@ def createModelC():
  		#loss='mean_squared_error',
 		optimizer='adadelta', # an adaptive learning rate method
   		metrics=['accuracy'])
+	
 	return model
 
 def createModelB():
@@ -162,28 +169,28 @@ def createModelB():
 
 	# layer 1
 	model.add(Convolution2D(
-			32, # number of convolution filters to use
-			(3,3), # number of rows, columns in each convolution kernel
-			input_shape=input_shape,
-			name = 'conv1'
+		32, # number of convolution filters to use
+		(3,3), # number of rows, columns in each convolution kernel
+		input_shape=input_shape,
+		name = 'conv1'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
 
 	# layer 2
 	model.add(Convolution2D(
-			64, # number of convolution filters to use
-			(3,3), # number of rows, columns in each convolution kernel
-			name = 'conv2'
+		64, # number of convolution filters to use
+		(3,3), # number of rows, columns in each convolution kernel
+		name = 'conv2'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
 
 	# layer 3
 	model.add(Convolution2D(
-			128, # number of convolution filters to use
-			(3,3), # number of rows, columns in each convolution kernel
-			name = 'conv3'
+		128, # number of convolution filters to use
+		(3,3), # number of rows, columns in each convolution kernel
+		name = 'conv3'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
@@ -204,28 +211,17 @@ def createModelB():
 		optimizer='adadelta', # an adaptive learning rate method
 		metrics=['accuracy'])
 	
-	return model	
-
-def loadZooWeights(model):
-	# Blocker: https://github.com/gradientzoo/python-gradientzoo/issues/1
-	zoo = KerasGradientzoo(ZOO_MODEL_NAME)
-	try:
-		zoo.load(model)
-		if DEBUG:
-			print('Found and loaded latest model weights from gradientzoo')
-	except NotFoundError:
-		print('No existing model weights found, training for the first time')
-	except Exception as e:
-		if 'You are trying to load' in str(e) and raw_input('Invalid weights found, continue? ')[0] != 'y':	
-			sys.exit(1)
-		raise e
-		
-	return zoo
+	return model
 
 def trainWeights(model, X_train, X_test, Y_train, Y_test, nEpochs, myCallbacks):
-	model.fit(X_train, Y_train, batch_size=batch_size, epochs=nEpochs,
-        	verbose=1, validation_data=(X_test, Y_test),
-        	callbacks=myCallbacks)
+	model.fit(
+		X_train, 
+		Y_train, 
+		batch_size=batch_size, 
+		epochs=nEpochs,
+        verbose=1, 
+		validation_data=(X_test, Y_test),
+        callbacks=myCallbacks)
 
 def saveModel(model, modelpath, weightspath):
 	model_json = model.to_json()
@@ -234,29 +230,28 @@ def saveModel(model, modelpath, weightspath):
 
 		# serialize weights to HDF5
 		model.save_weights(weightspath)
+
 		if DEBUG:
 			print("Saved model to disk")
 
 def parseArgs():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-n', '--nEpochs', action='store', type=int,
-                help='Number of epochs to re-train the model',default=0)
+        help='Number of epochs to re-train the model',default=0)
 	parser.add_argument('-m', '--model', action='store', type=str, 
 		help='Output JSON file to store the trained model',default='model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-                help='Output H5 file to store the trained weights',default='model.h5') 
+        help='Output H5 file to store the trained weights',default='model.h5') 
 	parser.add_argument('-t', '--modelType', action='store', type=str,
-                help='We implemented two model structures, you can specify: A (Lecun-Bottou)  or B (Cirstea-Likforman)',default='A')
-	parser.add_argument('-z', '--useZoo', action='store', type=bool,
-		help='True if you want to use the zoo to speedup the training stage, False else',default=False)
+        help='We implemented two model structures, you can specify: A (Lecun-Bottou) or B (Cirstea-Likforman)',default='A')
 
 	args = parser.parse_args()
 	
-	return args.model, args.weights, args.nEpochs, args.modelType, args.useZoo
+	return args.model, args.weights, args.nEpochs, args.modelType
 
 def main():
 	# read argument choices
-	[modelpath, weightspath, nEpochs, modelType, useZoo] = parseArgs()
+	[modelpath, weightspath, nEpochs, modelType] = parseArgs()
 
 	# choose the model
 	if 'A'==modelType:
@@ -264,17 +259,13 @@ def main():
 	elif 'B'==modelType:
 		model = createModelB()
 	else:
-		print('Error: you specified an unexistent model type')
-		exit()
+		raise Exception('You choose an unexistent model, please specify A or B.')
 
 	# prepare training data
 	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 
 	# initialize callbacks
 	callbacks = [LossHistory()]
-	if useZoo:
-		zoo = loadZooWeights(model)		
-		callbacks.append(zoo.make_callback(model, after_epochs=1))
 
 	# train model and plot error
 	trainWeights(model, X_train, X_test, Y_train, Y_test, nEpochs, callbacks) 
@@ -291,5 +282,3 @@ main
 '''
 if '__main__' == __name__:
 	main()
-
-

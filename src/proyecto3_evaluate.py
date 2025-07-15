@@ -7,7 +7,7 @@
 # - http://machinelearningmastery.com/save-load-keras-deep-learning-models/
 # - https://keras.io/models/model/
 
-from src.proyecto3_train import prepareTrainingData
+from proyecto3_train import prepareTrainingData
 from keras.models import model_from_json
 import numpy as np
 import matplotlib.pyplot as plt

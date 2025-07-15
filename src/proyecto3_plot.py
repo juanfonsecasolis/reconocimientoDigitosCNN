@@ -13,18 +13,14 @@
 # - https://github.com/fchollet/keras/issues/2733
 
 import numpy as np
-from scipy.misc import imsave
-import pylab as pl
-from src.proyecto3_train import *
+from proyecto3_train import *
 from keras.utils import plot_model
 import matplotlib.pyplot as plt
 import numpy.ma as ma
-import matplotlib.cm as cm
-from src.proyecto3_evaluate import getTrainImageMNIST
-from src.proyecto3_train import prepareTrainingData
+from proyecto3_evaluate import getTrainImageMNIST
+from proyecto3_train import prepareTrainingData
 from keras import backend as K
-from src.proyecto3_evaluate import *
-from scipy.misc import imsave
+from proyecto3_evaluate import *
 import matplotlib.pylab as plt
 
 input_img = '../data/cinco.png'
