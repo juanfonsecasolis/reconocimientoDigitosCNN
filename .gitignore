@@ -3,6 +3,7 @@
 *h5
 *json
 out.txt
+models.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -11,7 +11,7 @@ from proyecto3_train import prepareTrainingData
 from keras.models import model_from_json
 import numpy as np
 import matplotlib.pyplot as plt
-import Image
+from PIL import Image
 import argparse
 from keras import backend as K
 import time
@@ -23,8 +23,7 @@ def tryLoad(filepath):
 	try:
 		fileOpened = open(filepath, 'r')
 	except IOError:
-		print('Error: ' + filepath +  ' path unexistent')
-		exit(1)
+		raise Exception('Error: ' + filepath +  ' path unexistent')
 	return fileOpened
 
 def loadModel(modelpath, weightspath):
@@ -63,9 +62,9 @@ def loadImage(imagepath):
 def parseArgs():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default='model.json')
+		help='JSON file containing the pretrained model',default='../models/model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-                help='H5 file containing the pretrained weights',default='model.h5') 
+                help='H5 file containing the pretrained weights',default='../models/model.h5') 
 	parser.add_argument('-i', '--imagepath', action='store', type=str,
                 help='Path to the 28x28 grayscale BMP to analize, if none is specified then a benchmark is executed', default='none')
 
@@ -97,7 +96,10 @@ def predict(model, image, verbose=True):
 		print('Classification time: %d (ms)' % elapsed)
 	return elapsed, result 
 
-def main():
+'''
+Main
+'''
+if '__main__' == __name__:
 
 	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 	[modelpath, weightspath, imagepath] = parseArgs()
@@ -117,9 +119,3 @@ def main():
 		#[B,A] = getTrainImageMNIST(15, X_test, Y_test)
 		A = loadImage(imagepath)	
 		predict(model, A)
-	
-'''
-Main
-'''
-if '__main__' == __name__:
-    main()

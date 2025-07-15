@@ -82,7 +82,8 @@ def createModelA():
 		20, # number of convolution filters to use
 		(5,5), # number of rows, columns in each convolution kernel
 		input_shape=input_shape,
-		name = 'conv1'
+		name = 'conv1',
+		data_format="channels_last"
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
@@ -91,8 +92,9 @@ def createModelA():
 	model.add(Convolution2D(
 		50, # number of convolution filters to use
 		(5,5), # number of rows, columns in each convolution kernel
-	padding="same",
-		name = 'conv2'
+		padding="same",
+		name = 'conv2',
+		data_format="channels_last"
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
@@ -113,54 +115,6 @@ def createModelA():
 		metrics=['accuracy'])
 	return model
 
-def createModelC():
-	'''
-	Taken from: https://elitedatascience.com/keras-tutorial-deep-learning-in-python
-	'''
-	model = Sequential()
-	model.add(Convolution2D(
-		nb_filters, # number of convolution filters to use
-		(nb_conv, nb_conv), # number of rows, columns in each convolution kernel
-        padding='valid',
-        input_shape=input_shape,
-		name = 'conv1'
-	))
-	model.add(Activation('relu'))
-	model.add(Convolution2D(
-		nb_filters, 
-		(nb_conv, nb_conv),
-		name = 'conv2'
-	))
-	model.add(Activation('relu'))
-	
-	# MaxPooling: reduce the number of parameter in the next layer by keeping the 2 
-	# maximum values of each filter in the current layer
-	model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
-	
-	# Dropout: this avoids overfitting by disabling cerain networks during the training
-	model.add(Dropout(0.25))
-	
-	# Flatten: this flats a 2D input into a 1D array
-	model.add(Flatten())
-	
-	# Dense: this creates a layer where each unit is fully connected to the next layer
-	# (has entries to all the nodes in the next layer), the parameter is the output size of
-	# the layer
-	model.add(Dense(128))
-	model.add(Activation('relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(nb_classes))
-	model.add(Activation('softmax'))
-	
-	# compile and return
-	model.compile(
-		loss='categorical_crossentropy', # used to detect category labels
- 		#loss='mean_squared_error',
-		optimizer='adadelta', # an adaptive learning rate method
-  		metrics=['accuracy'])
-	
-	return model
-
 def createModelB():
 	'''
 	Cîrstea-Likforman structure
@@ -172,7 +126,8 @@ def createModelB():
 		32, # number of convolution filters to use
 		(3,3), # number of rows, columns in each convolution kernel
 		input_shape=input_shape,
-		name = 'conv1'
+		name = 'conv1',
+		data_format="channels_last"
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
@@ -181,7 +136,8 @@ def createModelB():
 	model.add(Convolution2D(
 		64, # number of convolution filters to use
 		(3,3), # number of rows, columns in each convolution kernel
-		name = 'conv2'
+		name = 'conv2',
+		data_format="channels_last"
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
@@ -210,6 +166,56 @@ def createModelB():
 		loss='categorical_crossentropy', # used to detect category labels
 		optimizer='adadelta', # an adaptive learning rate method
 		metrics=['accuracy'])
+	
+	return model
+
+def createModelC():
+	'''
+	Taken from: https://elitedatascience.com/keras-tutorial-deep-learning-in-python
+	'''
+	model = Sequential()
+	model.add(Convolution2D(
+		nb_filters, # number of convolution filters to use
+		(nb_conv, nb_conv), # number of rows, columns in each convolution kernel
+        padding='valid',
+        input_shape=input_shape,
+		name = 'conv1',
+		data_format="channels_last"
+	))
+	model.add(Activation('relu'))
+	model.add(Convolution2D(
+		nb_filters, 
+		(nb_conv, nb_conv),
+		name = 'conv2',
+		data_format="channels_last"
+	))
+	model.add(Activation('relu'))
+	
+	# MaxPooling: reduce the number of parameter in the next layer by keeping the 2 
+	# maximum values of each filter in the current layer
+	model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
+	
+	# Dropout: this avoids overfitting by disabling cerain networks during the training
+	model.add(Dropout(0.25))
+	
+	# Flatten: this flats a 2D input into a 1D array
+	model.add(Flatten())
+	
+	# Dense: this creates a layer where each unit is fully connected to the next layer
+	# (has entries to all the nodes in the next layer), the parameter is the output size of
+	# the layer
+	model.add(Dense(128))
+	model.add(Activation('relu'))
+	model.add(Dropout(0.5))
+	model.add(Dense(nb_classes))
+	model.add(Activation('softmax'))
+	
+	# compile and return
+	model.compile(
+		loss='categorical_crossentropy', # used to detect category labels
+ 		#loss='mean_squared_error',
+		optimizer='adadelta', # an adaptive learning rate method
+  		metrics=['accuracy'])
 	
 	return model
 
@@ -258,8 +264,10 @@ def main():
 		model = createModelA()
 	elif 'B'==modelType:
 		model = createModelB()
+	elif 'C'==modelType:
+		model = createModelC()
 	else:
-		raise Exception('You choose an unexistent model, please specify A or B.')
+		raise Exception('You choose an unexistent model.')
 
 	# prepare training data
 	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()

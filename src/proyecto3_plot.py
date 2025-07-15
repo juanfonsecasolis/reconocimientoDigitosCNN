@@ -24,6 +24,9 @@ from proyecto3_evaluate import *
 import matplotlib.pylab as plt
 
 input_img = '../data/cinco.png'
+model_filepath = '../models/model.json'
+h5_filepath = '../models/model.h5'
+doc_filepath = '../doc/model.png'
 
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -39,7 +42,7 @@ def make_mosaic(imgs, nrows, ncols, border=1):
     
     paddedh = imshape[0] + border
     paddedw = imshape[1] + border
-    for i in xrange(nimgs):
+    for i in range(nimgs):
         row = int(np.floor(i / ncols))
         col = i % ncols
         
@@ -47,43 +50,44 @@ def make_mosaic(imgs, nrows, ncols, border=1):
                col * paddedw:col * paddedw + imshape[1]] = imgs[i]
     return mosaic
 
-# 1) plot layers
-model = loadModel('./models/model.json','model.h5')
-plot_model(model, to_file='./doc/model.png')
+if __name__ == '__main__':
+    # 1) plot layers
+    model = loadModel(model_filepath, h5_filepath)
+    plot_model(model, to_file=doc_filepath)
 
-# 2) plot convolutional results
-iLayer = 0
-cLayer = model.layers[iLayer]
-W = cLayer.kernel.get_value(borrow=True)
-print("W shape : ", W.shape)
-W = np.squeeze(W)
-print("W shape : ", W.shape)
-title = 'Layer (#'+str(iLayer)+'): '+cLayer.name
-plt.title(title)
-W2 = []
-kernel_size = cLayer.kernel_size
-nFilters = cLayer.filters
-for i in range(nFilters):
-	wAct = np.zeros(kernel_size)
-	for j in range(kernel_size[0]):
-		for k in range(kernel_size[1]):
-			wAct[j,k] = W[j,k,i]
-	W2.append(wAct)
+    # 2) plot convolutional results
+    iLayer = 0
+    cLayer = model.layers[iLayer]
+    W = cLayer.kernel.get_value(borrow=True)
+    print("W shape : ", W.shape)
+    W = np.squeeze(W)
+    print("W shape : ", W.shape)
+    title = 'Layer (#'+str(iLayer)+'): '+cLayer.name
+    plt.title(title)
+    W2 = []
+    kernel_size = cLayer.kernel_size
+    nFilters = cLayer.filters
+    for i in range(nFilters):
+        wAct = np.zeros(kernel_size)
+    for j in range(kernel_size[0]):
+        for k in range(kernel_size[1]):
+            wAct[j,k] = W[j,k,i]
+    W2.append(wAct)
 
-W2 = np.array(W2)
-mosaic_x = int(np.ceil(np.sqrt(nFilters)))
-mosaic_y = int(np.ceil(np.sqrt(nFilters)))
-print("Mosaic: %s,%s" % (mosaic_x, mosaic_y))
-plt.imshow(make_mosaic(W2,mosaic_x,mosaic_y))
-plt.show()
+    W2 = np.array(W2)
+    mosaic_x = int(np.ceil(np.sqrt(nFilters)))
+    mosaic_y = int(np.ceil(np.sqrt(nFilters)))
+    print("Mosaic: %s,%s" % (mosaic_x, mosaic_y))
+    plt.imshow(make_mosaic(W2,mosaic_x,mosaic_y))
+    plt.show()
 
-# 3) Visualize convolution result (after activation)
-[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
-[Y, X] = getTrainImageMNIST(15,X_test,Y_test)
-convout1_f = K.function([model.layers[0].input], model.layers[1].output)
-C1 = convout1_f(X)
-C1 = np.squeeze(C1)
-print("C1 shape : ", C1.shape)
-plt.title(title)
-plt.imshow(make_mosaic(C1, mosaic_x,mosaic_y))
-plt.show()
+    # 3) Visualize convolution result (after activation)
+    [X_train, X_test, Y_train, Y_test] = prepareTrainingData()
+    [Y, X] = getTrainImageMNIST(15,X_test,Y_test)
+    convout1_f = K.function([model.layers[0].input], model.layers[1].output)
+    C1 = convout1_f(X)
+    C1 = np.squeeze(C1)
+    print("C1 shape : ", C1.shape)
+    plt.title(title)
+    plt.imshow(make_mosaic(C1, mosaic_x,mosaic_y))
+    plt.show()
