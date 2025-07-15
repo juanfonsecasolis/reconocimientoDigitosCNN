@@ -7,7 +7,7 @@
 # - https://stats.stackexchange.com/questions/51296/how-do-you-calculate-precision-and-recall-for-multiclass-classification-using-co
 
 from __future__ import print_function
-from src.proyecto3_evaluate import *
+from proyecto3_evaluate import *
 
 DEBUG = False
 NUM_DIGITS_MNIST = 10
@@ -16,9 +16,9 @@ C = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
 def parseArgs():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default='./models/model.json')
+		help='JSON file containing the pretrained model',default='../models/model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-                help='H5 file containing the pretrained weights',default='model.h5') 
+        help='H5 file containing the pretrained weights',default='../models/model.h5') 
 
 	args = parser.parse_args()
 	
@@ -58,7 +58,6 @@ def computeAndPrintMetrics():
 	maxSensitivity = 0
 	maxSpecificity = 0
 	maxPrecision = 0
-
 
 	for i in range(NUM_DIGITS_MNIST): 	
 		print('* Category '+str(i)+': ',end='')
@@ -133,7 +132,10 @@ def calculateAndPrintAdvancedMetrics(TP,FP,TN,FN):
 	print('')
 	return sensitivity, specificity, precision
 
-def main():
+'''
+Main
+'''
+if '__main__' == __name__:
 	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
 	[modelpath, weightspath] = parseArgs()
 	model = loadModel(modelpath, weightspath)
@@ -146,9 +148,3 @@ def main():
 	# compute the confusion matrix and associated metrics
 	computeConfusionMatrix(model, X_test, Y_test)
 	computeAndPrintMetrics()
-
-'''
-Main
-'''
-if '__main__' == __name__:
-	main()

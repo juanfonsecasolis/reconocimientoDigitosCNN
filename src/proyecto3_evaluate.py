@@ -23,7 +23,7 @@ def tryLoad(filepath):
 	try:
 		fileOpened = open(filepath, 'r')
 	except IOError:
-		raise Exception('Error: ' + filepath +  ' path unexistent')
+		raise Exception('Path unexistent: "'+filepath + '".')
 	return fileOpened
 
 def loadModel(modelpath, weightspath):
@@ -64,9 +64,9 @@ def parseArgs():
 	parser.add_argument('-m', '--model', action='store', type=str, 
 		help='JSON file containing the pretrained model',default='../models/model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-                help='H5 file containing the pretrained weights',default='../models/model.h5') 
+        help='H5 file containing the pretrained weights',default='../models/model.h5') 
 	parser.add_argument('-i', '--imagepath', action='store', type=str,
-                help='Path to the 28x28 grayscale BMP to analize, if none is specified then a benchmark is executed', default='none')
+        help='Path to the 28x28 grayscale BMP to analize, if none is specified then a benchmark is executed', default='none')
 
 	args = parser.parse_args()
 	

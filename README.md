@@ -15,5 +15,8 @@ pip install -r requirements.txt
 ## Run
 ```
 source .venv/bin/activate
+./trainModel.sh
+./evaluateModel.sh
+./computeConfusionMatrix.sh
 deactivate
 ```
