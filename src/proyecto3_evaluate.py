@@ -8,9 +8,9 @@
 # - https://keras.io/models/model/
 
 from proyecto3_train import prepare_training_data
-from src.proyecto3_utils import *
+from proyecto3_utils import *
 from keras.models import model_from_json
-from keras import backend as K
+#from keras import backend as K
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
