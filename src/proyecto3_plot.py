@@ -1,8 +1,7 @@
-#
 # -*- coding: utf-8 -*-
-# 2017 L. Jimenez, J. Fonseca
-# Visión por computadora, prof. P. Alvarado ITCR
-# proyecto3_plot.py
+# Authors: 2017 Luis Jimenez, Juan Fonseca
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_plot.py
 #
 # References: 
 # - https://keras.io/visualization/
@@ -12,15 +11,15 @@
 # - https://github.com/fchollet/keras/blob/master/keras/layers/convolutional.py
 # - https://github.com/fchollet/keras/issues/2733
 
-import numpy as np
+from proyecto3_evaluate import *
 from proyecto3_train import *
-from keras.utils import plot_model
-import matplotlib.pyplot as plt
-import numpy.ma as ma
 from proyecto3_evaluate import getTrainImageMNIST
 from proyecto3_train import prepareTrainingData
 from keras import backend as K
-from proyecto3_evaluate import *
+from keras.utils import plot_model
+import numpy as np
+import matplotlib.pyplot as plt
+import numpy.ma as ma
 import matplotlib.pylab as plt
 
 input_img = '../data/cinco.png'

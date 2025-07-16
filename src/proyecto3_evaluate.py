@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# 2017 L. Jimenez, J. Fonseca
-# Visión por computadora, prof. P. Alvarado ITCR
-# proyecto3_evaluate.py
+# Authors: 2017 Luis Jimenez, Juan Fonseca
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_evaluate.py
 # 
 # Referencias: 
 # - http://machinelearningmastery.com/save-load-keras-deep-learning-models/
@@ -9,11 +9,11 @@
 
 from proyecto3_train import prepareTrainingData
 from keras.models import model_from_json
+from keras import backend as K
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import argparse
-from keras import backend as K
 import time
 
 DEBUG = False 
@@ -106,7 +106,8 @@ if '__main__' == __name__:
 	model = loadModel(modelpath, weightspath)
 
 	# evaluate loaded model on test data
-	model.compile(loss='categorical_crossentropy',
+	model.compile(
+		loss='categorical_crossentropy',
 		optimizer='adam',
 		metrics=['accuracy'])
 
@@ -114,8 +115,5 @@ if '__main__' == __name__:
 		print('Executing benchmark...')
 		executeBenchmark(model, X_test, Y_test)
 	else:
-	
-		# one channel, 28x28 pixel images
-		#[B,A] = getTrainImageMNIST(15, X_test, Y_test)
 		A = loadImage(imagepath)	
 		predict(model, A)

@@ -1,9 +1,5 @@
 # custom
-*pyc
-*h5
-*json
-out.txt
-models.json
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

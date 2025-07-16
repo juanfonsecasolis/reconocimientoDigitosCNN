@@ -1,8 +1,7 @@
-#
 # -*- coding: utf-8 -*-
-# 2017 L. Jimenez, J. Fonseca
-# Visión por computadora, prof. P. Alvarado ITCR
-# proyecto3_train.py
+# Authors: 2017 Luis Jimenez, Juan Fonseca
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_train.py
 #
 # References: 
 # - https://raw.githubusercontent.com/gradientzoo/python-gradientzoo/master/examples/keras_mnist.py
@@ -11,35 +10,32 @@
 # - https://keras.io/callbacks/
 # - https://keunwoochoi.wordpress.com/2016/07/16/keras-callbacks/
 
-#from gradientzoo import KerasGradientzoo, NotFoundError
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
+from keras.utils import to_categorical
+from keras import backend as K, callbacks
 import argparse
-from keras import backend as K
-from keras import callbacks
 import numpy as np
 import matplotlib.pylab as plt
-from keras.utils import to_categorical
-
-# bypass the certificate error on the KerasGradientZoo
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
 
 # Constants
 batch_size = 128
 nb_classes = 10
-img_rows, img_cols = 28, 28
+img_rows, img_cols, num_channels = 28, 28, 1 # dimensiones and number of channels of the image
 nb_filters = 32
 nb_pool = 2
 nb_conv = 3
-ZOO_MODEL_NAME='ericflo/mnist'
-K.set_image_data_format('channels_first')
 C = np.zeros((10,10)) # confusion matrix
-input_shape = (1, img_rows, img_cols)
+
+print('Image data format: '+ K.image_data_format())
+if K.image_data_format() == "channels_first":
+	input_shape = (num_channels, img_rows, img_cols)
+else:
+	input_shape = (img_rows, img_cols, num_channels)
 
 # Control flags 
-DEBUG = False
+DEBUG = True
 
 class LossHistory(callbacks.Callback):
     def on_train_begin(self, logs={}):
@@ -50,9 +46,16 @@ class LossHistory(callbacks.Callback):
 
 def prepareTrainingData():
 	(X_train, y_train), (X_test, y_test) = mnist.load_data()
-	
-	X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
-	X_test = X_test.reshape(X_test.shape[0], 1, img_rows, img_cols)
+
+	num_train_images = X_train.shape[0]
+	num_test_images = X_test.shape[0]
+
+	if K.image_data_format() == "channels_first":
+		X_train = X_train.reshape(num_train_images, num_channels, img_rows, img_cols)
+		X_test = X_test.reshape(num_test_images, num_channels, img_rows, img_cols)
+	else:
+		X_train = X_train.reshape(num_train_images, img_rows, img_cols, num_channels)
+		X_test = X_test.reshape(num_test_images, img_rows, img_cols, num_channels)
 
 	X_train = X_train.astype('float32')
 	X_test = X_test.astype('float32')
@@ -61,8 +64,8 @@ def prepareTrainingData():
 	
 	if DEBUG:
 		print('X_train shape:', X_train.shape)
-		print(X_train.shape[0], 'train samples')
-		print(X_test.shape[0], 'test samples')
+		print(num_train_images, 'train samples.')
+		print(num_test_images, 'test samples.')
 
 	Y_train = to_categorical(y_train, nb_classes)
 	Y_test = to_categorical(y_test, nb_classes)
@@ -82,8 +85,7 @@ def createModelA():
 		20, # number of convolution filters to use
 		(5,5), # number of rows, columns in each convolution kernel
 		input_shape=input_shape,
-		name = 'conv1',
-		data_format="channels_last"
+		name = 'conv1'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
@@ -93,8 +95,7 @@ def createModelA():
 		50, # number of convolution filters to use
 		(5,5), # number of rows, columns in each convolution kernel
 		padding="same",
-		name = 'conv2',
-		data_format="channels_last"
+		name = 'conv2'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
@@ -126,8 +127,7 @@ def createModelB():
 		32, # number of convolution filters to use
 		(3,3), # number of rows, columns in each convolution kernel
 		input_shape=input_shape,
-		name = 'conv1',
-		data_format="channels_last"
+		name = 'conv1'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
@@ -136,8 +136,7 @@ def createModelB():
 	model.add(Convolution2D(
 		64, # number of convolution filters to use
 		(3,3), # number of rows, columns in each convolution kernel
-		name = 'conv2',
-		data_format="channels_last"
+		name = 'conv2'
 	))
 	model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size=(2,2)))
@@ -245,9 +244,9 @@ def parseArgs():
 	parser.add_argument('-n', '--nEpochs', action='store', type=int,
         help='Number of epochs to re-train the model',default=0)
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='Output JSON file to store the trained model',default='model.json')
+		help='Output JSON file to store the trained model',default='../output/model.json')
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='Output H5 file to store the trained weights',default='model.h5') 
+        help='Output H5 file to store the trained weights',default='../output/model.h5') 
 	parser.add_argument('-t', '--modelType', action='store', type=str,
         help='We implemented two model structures, you can specify: A (Lecun-Bottou) or B (Cirstea-Likforman)',default='A')
 
@@ -255,7 +254,11 @@ def parseArgs():
 	
 	return args.model, args.weights, args.nEpochs, args.modelType
 
-def main():
+'''
+main
+'''
+if '__main__' == __name__:
+
 	# read argument choices
 	[modelpath, weightspath, nEpochs, modelType] = parseArgs()
 
@@ -280,13 +283,8 @@ def main():
 	plt.plot(callbacks[0].losses)
 	plt.xlabel('Batch')
 	plt.ylabel('Loss')
-	plt.show()
+	plt.title('Training result')
+	plt.save('../output/training.png')
 
 	# save model
 	saveModel(model, modelpath, weightspath)
-
-'''
-main
-'''
-if '__main__' == __name__:
-	main()

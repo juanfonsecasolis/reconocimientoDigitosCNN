@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-# 2017 L. Jimenez, J. Fonseca
-# Visión por computadora, prof. P. Alvarado ITCR
-# proyecto3_confusionMatrix.py
+# Authors: 2017 Luis Jimenez, Juan Fonseca
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_confusionMatrix.py
 # 
-# Referencias: 
+# Referencias:
 # - https://stats.stackexchange.com/questions/51296/how-do-you-calculate-precision-and-recall-for-multiclass-classification-using-co
 
 from __future__ import print_function
@@ -141,9 +141,10 @@ if '__main__' == __name__:
 	model = loadModel(modelpath, weightspath)
 
 	# evaluate loaded model on test data
-	model.compile(loss='categorical_crossentropy',
+	model.compile(
+		loss='categorical_crossentropy',
 		optimizer='adam',
-	metrics=['accuracy'])
+		metrics=['accuracy'])
 
 	# compute the confusion matrix and associated metrics
 	computeConfusionMatrix(model, X_test, Y_test)
