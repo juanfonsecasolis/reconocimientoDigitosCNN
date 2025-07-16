@@ -13,19 +13,15 @@
 
 from proyecto3_evaluate import *
 from proyecto3_train import *
-from proyecto3_evaluate import getTrainImageMNIST
-from proyecto3_train import prepareTrainingData
+from proyecto3_evaluate import get_train_images_mnist
+from proyecto3_train import prepare_training_data
+from proyecto3_utils import *
 from keras import backend as K
 from keras.utils import plot_model
 import numpy as np
 import matplotlib.pyplot as plt
 import numpy.ma as ma
 import matplotlib.pylab as plt
-
-input_img = '../data/cinco.png'
-model_filepath = '../models/model.json'
-h5_filepath = '../models/model.h5'
-doc_filepath = '../doc/model.png'
 
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -50,9 +46,10 @@ def make_mosaic(imgs, nrows, ncols, border=1):
     return mosaic
 
 if __name__ == '__main__':
+
     # 1) plot layers
-    model = loadModel(model_filepath, h5_filepath)
-    plot_model(model, to_file=doc_filepath)
+    model = load_model(DEFAULT_MODEL_FILEPATH, DEFAULT_H5_FILEPATH)
+    plot_model(model, to_file=DIAGRAM_FILEPATH)
 
     # 2) plot convolutional results
     iLayer = 0
@@ -81,8 +78,8 @@ if __name__ == '__main__':
     plt.show()
 
     # 3) Visualize convolution result (after activation)
-    [X_train, X_test, Y_train, Y_test] = prepareTrainingData()
-    [Y, X] = getTrainImageMNIST(15,X_test,Y_test)
+    [X_train, X_test, Y_train, Y_test] = prepare_training_data()
+    [Y, X] = get_train_images_mnist(15,X_test,Y_test)
     convout1_f = K.function([model.layers[0].input], model.layers[1].output)
     C1 = convout1_f(X)
     C1 = np.squeeze(C1)

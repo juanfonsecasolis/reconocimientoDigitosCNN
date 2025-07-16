@@ -1,13 +1,8 @@
 np_utils
-#setuptools==67.7.1
-scipy
-#gradientzoo
-#support
-#pydot 
+scipy 
 graphviz
 keras
 matplotlib
 h5py
-#theano
 tensorflow
 pillow

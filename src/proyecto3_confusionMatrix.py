@@ -8,26 +8,26 @@
 
 from __future__ import print_function
 from proyecto3_evaluate import *
+from proyecto3_utils import *
 
-DEBUG = False
 NUM_DIGITS_MNIST = 10
 C = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
 
-def parseArgs():
+def parse_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default='../models/model.json')
+		help='JSON file containing the pretrained model',default=DEFAULT_MODEL_FILEPATH)
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='H5 file containing the pretrained weights',default='../models/model.h5') 
+        help='H5 file containing the pretrained weights',default=DEFAULT_H5_FILEPATH) 
 
 	args = parser.parse_args()
 	
 	return args.model, args.weights 
 
-def computeConfusionMatrix(model, X_test, Y_test):
+def compute_confusion_matrix(model, X_test, Y_test):
 	N = len(X_test)
 	for i in range(N):
-		[y_true, x] = getTrainImageMNIST(i,X_test,Y_test)
+		[y_true, x] = get_train_images_mnist(i,X_test,Y_test)
 		y_pred = model.predict(x)
 		i = int(np.argmax(y_pred))
 		j = int(np.argmax(y_true))
@@ -45,19 +45,19 @@ def computeConfusionMatrix(model, X_test, Y_test):
 		print('')
 	print('\nTotal samples analyzed: ' + str(np.sum(C)),end='\n')
 
-def computeAndPrintMetrics():
+def compute_and_print_metrics():
 	print('\nMetrics per category:')
 	TPS = []
 	FPS = []
 	FNS = []
 	TNS = []
 
-	minSensitivity = 999
-	minSpecificity = 999
-	minPrecision = 999
-	maxSensitivity = 0
-	maxSpecificity = 0
-	maxPrecision = 0
+	min_sensitivity = 999
+	min_specificity = 999
+	min_precision = 999
+	max_sensitivity = 0
+	max_specificity = 0
+	max_precision = 0
 
 	for i in range(NUM_DIGITS_MNIST): 	
 		print('* Category '+str(i)+': ',end='')
@@ -88,18 +88,18 @@ def computeAndPrintMetrics():
 		print('FP=' + str(FP) + ', ', end='')
 		print('FN=' + str(FN) + ', ', end='')
 		print('TN=' + str(TN) + ', ', end='\n')
-		[sensitivity, specificity, precision] = calculateAndPrintAdvancedMetrics(TP,FP,TN,FN)
+		[sensitivity, specificity, precision] = calculate_and_print_advanced_metrics(TP,FP,TN,FN)
 		TPS.append(TP)
 		FPS.append(FP)
 		FNS.append(FN)
 		TNS.append(TN)
 		
-		minSensitivity = min(minSensitivity, sensitivity)
-		minSpecificity = min(minSpecificity, specificity)
-		minPrecision = min(minPrecision, precision)
-		maxSensitivity = max(maxSensitivity, sensitivity)
-		maxSpecificity = max(maxSpecificity, specificity)
-		maxPrecision = max(maxPrecision, precision)
+		min_sensitivity = min(min_sensitivity, sensitivity)
+		min_specificity = min(min_specificity, specificity)
+		min_precision = min(min_precision, precision)
+		max_sensitivity = max(max_sensitivity, sensitivity)
+		max_specificity = max(max_specificity, specificity)
+		max_precision = max(max_precision, precision)
 
 	mTP = np.mean(TPS)
 	mFP = np.mean(FPS)
@@ -112,17 +112,17 @@ def computeAndPrintMetrics():
 	print('TN=' + str(mTN) + ', ', end='')
 	print('FN=' + str(mFN) + ', ', end='')
 	print('')
-	calculateAndPrintAdvancedMetrics(mTP, mFP, mTN, mFN)
+	calculate_and_print_advanced_metrics(mTP, mFP, mTN, mFN)
 
 	print('Min/max')
-	print('Min sensitivity = ' + str(minSensitivity))
-	print('Min specificity = ' + str(minSpecificity))
-	print('Min precision = ' + str(minPrecision))
-	print('Max sensitivity = ' + str(maxSensitivity))
-	print('Max specificity = ' + str(maxSpecificity))
-	print('Max precision = ' + str(maxPrecision))
+	print('Min sensitivity = ' + str(min_sensitivity))
+	print('Min specificity = ' + str(min_specificity))
+	print('Min precision = ' + str(min_precision))
+	print('Max sensitivity = ' + str(max_sensitivity))
+	print('Max specificity = ' + str(max_specificity))
+	print('Max precision = ' + str(max_precision))
 
-def calculateAndPrintAdvancedMetrics(TP,FP,TN,FN):
+def calculate_and_print_advanced_metrics(TP,FP,TN,FN):
 	sensitivity = TP/(TP+FN)
 	specificity = TN/(TN+FP)
 	precision = TP/(TP+FP)
@@ -136,9 +136,9 @@ def calculateAndPrintAdvancedMetrics(TP,FP,TN,FN):
 Main
 '''
 if '__main__' == __name__:
-	[X_train, X_test, Y_train, Y_test] = prepareTrainingData()
-	[modelpath, weightspath] = parseArgs()
-	model = loadModel(modelpath, weightspath)
+	[X_train, X_test, Y_train, Y_test] = prepare_training_data()
+	[model_path, weights_path] = parse_args()
+	model = load_model(model_path, weights_path)
 
 	# evaluate loaded model on test data
 	model.compile(
@@ -147,5 +147,5 @@ if '__main__' == __name__:
 		metrics=['accuracy'])
 
 	# compute the confusion matrix and associated metrics
-	computeConfusionMatrix(model, X_test, Y_test)
-	computeAndPrintMetrics()
+	compute_confusion_matrix(model, X_test, Y_test)
+	compute_and_print_metrics()

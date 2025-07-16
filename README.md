@@ -1,8 +1,7 @@
 # reconocimientoDigitosCNN
-2021 - L. Jimenez, J. Fonseca.
+2021 - Luis Jimenez, Juan M. Fonseca (last updated on July 2025).
 
-Code for the paper [Reconocimiento de dígitos escritos a mano usando aprendizaje profundo
-](https://www.academia.edu/40196440/Reconocimiento_de_d%C3%ADgitos_escritos_a_mano_usando_aprendizaje_profundo) of the course MP6127.
+Code for the paper [Reconocimiento de dígitos escritos a mano usando aprendizaje profundo](https://www.academia.edu/40196440/Reconocimiento_de_d%C3%ADgitos_escritos_a_mano_usando_aprendizaje_profundo) of the course MP6127.
 
 ## Set up
 ```
@@ -15,8 +14,8 @@ pip install -r requirements.txt
 ## Run
 ```
 source .venv/bin/activate
-./trainModel.sh
-./evaluateModel.sh
-./computeConfusionMatrix.sh
+./train_model.sh
+./evaluate_model.sh
+./compute_confusion_matrix.sh
 deactivate
 ```
