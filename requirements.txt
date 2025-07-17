@@ -1,6 +1,6 @@
+pydot
 np_utils
 scipy 
-graphviz
 keras
 matplotlib
 h5py

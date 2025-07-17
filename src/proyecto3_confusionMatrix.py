@@ -18,7 +18,7 @@ def parse_args():
 	parser.add_argument('-m', '--model', action='store', type=str, 
 		help='JSON file containing the pretrained model',default=DEFAULT_MODEL_FILEPATH)
 	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='H5 file containing the pretrained weights',default=DEFAULT_H5_FILEPATH) 
+        help='H5 file containing the pretrained weights',default=DEFAULT_WEIGHTS_FILEPATH) 
 
 	args = parser.parse_args()
 	
@@ -136,7 +136,7 @@ def calculate_and_print_advanced_metrics(TP,FP,TN,FN):
 Main
 '''
 if '__main__' == __name__:
-	[X_train, X_test, Y_train, Y_test] = prepare_training_data()
+	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
 	[model_path, weights_path] = parse_args()
 	model = load_model(model_path, weights_path)
 

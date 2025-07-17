@@ -14,14 +14,11 @@
 from proyecto3_evaluate import *
 from proyecto3_train import *
 from proyecto3_evaluate import get_train_images_mnist
-from proyecto3_train import prepare_training_data
+from proyecto3_train import get_formated_mnist_data
 from proyecto3_utils import *
-from keras import backend as K
-from keras.utils import plot_model
+import keras
 import numpy as np
 import matplotlib.pyplot as plt
-import numpy.ma as ma
-import matplotlib.pylab as plt
 
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -31,7 +28,7 @@ def make_mosaic(imgs, nrows, ncols, border=1):
     nimgs = imgs.shape[0]
     imshape = imgs.shape[1:]
     
-    mosaic = ma.masked_all((nrows * imshape[0] + (nrows - 1) * border,
+    mosaic = np.ma.masked_all((nrows * imshape[0] + (nrows - 1) * border,
                             ncols * imshape[1] + (ncols - 1) * border),
                             dtype=np.float32)
     
@@ -48,13 +45,14 @@ def make_mosaic(imgs, nrows, ncols, border=1):
 if __name__ == '__main__':
 
     # 1) plot layers
-    model = load_model(DEFAULT_MODEL_FILEPATH, DEFAULT_H5_FILEPATH)
-    plot_model(model, to_file=DIAGRAM_FILEPATH)
+    model = keras.models.load_model(DEFAULT_MODEL_FILEPATH)
+    keras.utils.plot_model(model, to_file=DIAGRAM_FILEPATH)
 
     # 2) plot convolutional results
     iLayer = 0
     cLayer = model.layers[iLayer]
-    W = cLayer.kernel.get_value(borrow=True)
+    # W = cLayer.kernel.get_value(borrow=True)
+    W = cLayer.kernel._value
     print("W shape : ", W.shape)
     W = np.squeeze(W)
     print("W shape : ", W.shape)
@@ -78,9 +76,11 @@ if __name__ == '__main__':
     plt.show()
 
     # 3) Visualize convolution result (after activation)
-    [X_train, X_test, Y_train, Y_test] = prepare_training_data()
-    [Y, X] = get_train_images_mnist(15,X_test,Y_test)
-    convout1_f = K.function([model.layers[0].input], model.layers[1].output)
+    [X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
+    [Y, X] = [ Y_test[15], X_test[15 ]]
+
+    # convout1_f = keras.backend.function([model.layers[0].input], model.layers[1].output)
+    convout1_f = model.predict([model.layers[0].input], model.layers[1].output)
     C1 = convout1_f(X)
     C1 = np.squeeze(C1)
     print("C1 shape : ", C1.shape)
