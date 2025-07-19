@@ -120,7 +120,7 @@ if '__main__' == __name__:
 	elif 'C'==model_type:
 		model = create_model_c(input_shape, nb_classes, nb_filters, nb_conv, nb_pool)
 	else:
-		raise Exception('You choose an unexistent model.')
+		raise Exception('Please choose an existent model.')
 
 	# prepare training data
 	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
