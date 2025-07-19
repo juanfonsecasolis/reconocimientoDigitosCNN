@@ -97,5 +97,5 @@ if '__main__' == __name__:
 		unknown_image, _ = format_data(
 			np.array(load_image(image_filepath)), 
 			None,
-			normalize_data = False)
+			normalize_data = True)
 		timed_predict(model, unknown_image)
