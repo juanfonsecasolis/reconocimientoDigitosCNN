@@ -16,10 +16,12 @@ from PIL import Image
 import time
 import argparse
 	
-def load_image(imagepath):
-	im = Image.open(imagepath)
-	A = np.array(im)
-	A = np.array([np.array([A])])
+def load_image(image_filepath):
+	
+	with open(image_filepath, 'rb') as image_file:
+		im = Image.open(image_file)
+		A = [np.array(im)]
+		A = np.array([np.array(A)])
 	return A
 
 def parse_args():
@@ -37,13 +39,13 @@ def execute_benchmark(model, X_test, Y_test):
 	I = 100
 	TP = 0
 	for i in range(I):
-		[desired, image] = [ Y_test[i], X_test[i] ]
-		print('Desired value: ' + desired)
-		[elapsed, obtained] = model.predict(image, False)
-		print('Obtained value: ' + obtained)
+		[desired_category, image] = [ Y_test[i], X_test[i] ]
+		print('Desired value: ' + str(np.argmax(desired_category)))
+		[elapsed, obtained_category] = model.predict(image, False)
+		print('Obtained value: ' + str(np.argmax(obtained_category)))
 
 		times.append(elapsed)
-		if(np.sum(np.subtract(desired, obtained)) < 0.5):
+		if(np.sum(np.subtract(desired_category, obtained_category)) < 0.5):
 			TP += 1 
 		
 	print('Accuracy: %f' % (TP/I))
@@ -98,5 +100,5 @@ if '__main__' == __name__:
 		unknown_image, _ = format_data(
 			np.array(load_image(image_filepath)), 
 			None,
-			normalize_data = False)
+			normalize_data = True)
 		timed_predict(model, unknown_image)

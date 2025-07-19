@@ -22,8 +22,6 @@ import matplotlib.pylab as plt
 # Constants
 batch_size = 128
 nb_classes = 10
-img_rows, img_cols = 28, 28 # dimensions of the input images
-num_channels = 1  # number of channels of the image
 nb_filters = 32
 nb_pool = 2
 nb_conv = 3
@@ -36,13 +34,16 @@ class loss_history(keras.callbacks.Callback):
     def on_batch_end(self, batch, logs={}):
         self.losses.append(logs.get('loss'))
 
-def format_data(X, Y, normalize_data = True):
+def format_data(X, Y, normalize_data = False):
 	num_images = X.shape[0]
 
+	print('Keras image format: ' + keras.backend.image_data_format())
 	if keras.backend.image_data_format() == "channels_first":
-		X_curated = X.reshape(num_images, num_channels, img_rows, img_cols)
+		# Theano-style: NCHW (channel-first)
+		X_curated = X.reshape(num_images, NUM_CHANNELS, IMG_ROWS, IMG_COLS)
 	elif keras.backend.image_data_format() == "channels_last":
-		X_curated = X.reshape(num_images, img_rows, img_cols, num_channels)
+		# Tensorflow-style: NHWC (channel-last)
+		X_curated = X.reshape(num_images, IMG_ROWS, IMG_COLS, NUM_CHANNELS)
 	else:
 		raise Exception('Unknown image format "' + keras.backend.image_data_format() + '".')
 	
@@ -106,9 +107,9 @@ if '__main__' == __name__:
 	# determine the input shape
 	print('Image data format: '+ keras.backend.image_data_format())
 	if keras.backend.image_data_format() == "channels_first":
-		input_shape = (num_channels, img_rows, img_cols)
+		input_shape = (NUM_CHANNELS, IMG_ROWS, IMG_COLS)
 	if keras.backend.image_data_format() == "channels_last":
-		input_shape = (img_rows, img_cols, num_channels)
+		input_shape = (IMG_ROWS, IMG_COLS, NUM_CHANNELS)
 	else:
 		raise Exception('Unknown image format "' + keras.backend.image_data_format() + '".')
 
@@ -134,7 +135,7 @@ if '__main__' == __name__:
 	plt.xlabel('Batch iteration')
 	plt.ylabel('Error')
 	plt.title('Training result')
-	plt.savefig(DEFAULT_OUTPUT_DIRECTORY+'/training.png')
+	plt.savefig(DEFAULT_TRAINING_RESULT_FILEPATH)
 
 	# save model
 	model.save(model_path)

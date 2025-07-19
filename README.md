@@ -15,7 +15,7 @@ sudo apt-get install graphviz
 ## Run
 ```
 source .venv/bin/activate
-python3 proyecto3_train.py -n 1 -t C
+python3 proyecto3_train.py -n 3 -t C
 python proyecto3_evaluate.py -i ../data/one.bmp
 python proyecto3_confusionMatrix.py
 deactivate
