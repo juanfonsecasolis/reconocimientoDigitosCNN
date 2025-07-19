@@ -13,17 +13,7 @@ from proyecto3_train import get_formated_mnist_data
 import keras
 
 NUM_DIGITS_MNIST = 10
-confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
-
-def parse_args():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default=DEFAULT_MODEL_FILEPATH)
-	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='H5 file containing the pretrained weights',default=DEFAULT_WEIGHTS_FILEPATH) 
-
-	args = parser.parse_args()
-	return args.model, args.weights 
+confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST)) 
 
 def compute_confusion_matrix(model, X_test, Y_test):
 	
@@ -134,12 +124,18 @@ def calculate_and_print_advanced_metrics(TP,FP,TN,FN):
 	print('')
 	return sensitivity, specificity, precision
 
+def parse_args():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-m', '--model', action='store', type=str, 
+		help='JSON file containing the pretrained model.',default=DEFAULT_MODEL_FILEPATH)
+	return parser.parse_args().model
+
 '''
 Main
 '''
 if '__main__' == __name__:
 	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
-	[model_path, weights_path] = parse_args()
+	model_path = parse_args()
 	model = keras.models.load_model(model_path)
 
 	# evaluate loaded model on test data

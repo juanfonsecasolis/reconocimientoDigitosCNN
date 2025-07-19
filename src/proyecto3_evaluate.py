@@ -13,8 +13,8 @@ import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import argparse
 import time
+import argparse
 	
 def load_image(imagepath):
 	im = Image.open(imagepath)
@@ -25,15 +25,12 @@ def load_image(imagepath):
 def parse_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='JSON file containing the pretrained model',default=DEFAULT_MODEL_FILEPATH)
-	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='H5 file containing the pretrained weights',default=DEFAULT_WEIGHTS_FILEPATH) 
+		help='JSON file containing the pretrained model.',default=DEFAULT_MODEL_FILEPATH)
 	parser.add_argument('-i', '--imagepath', action='store', type=str,
-        help='Path to the 28x28 grayscale BMP to analize, if none is specified then a benchmark is executed', default='none')
+        help='Path to the 28x28 grayscale BMP to analize, if none is specified then a benchmark is executed,', default='none')
 
 	args = parser.parse_args()
-	
-	return args.model, args.weights, args.imagepath
+	return args.model, args.imagepath
 
 def execute_benchmark(model, X_test, Y_test):
 	times = []
@@ -81,11 +78,11 @@ if '__main__' == __name__:
 
 	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
 	if DEFAULT_DEBUG_FLAG:
-		print('Saving some MNIST testing images...')
+		print('Some MNIST labels...')
 		for i in range(5):
 			print(Y_train[i])
 	
-	[model_path, weights_path, image_filepath] = parse_args()
+	[model_path, image_filepath] = parse_args()
 	model = keras.models.load_model(model_path)
 
 	# evaluate loaded model on test data

@@ -96,15 +96,12 @@ def parse_args():
 	parser.add_argument('-n', '--nEpochs', action='store', type=int,
         help='Number of epochs to re-train the model.',default=0)
 	parser.add_argument('-m', '--model', action='store', type=str, 
-		help='Output JSON file to store the trained model.',default=DEFAULT_MODEL_FILEPATH)
-	parser.add_argument('-w', '--weights', action='store', type=str, 
-        help='Output H5 file to store the trained weights.',default=DEFAULT_WEIGHTS_FILEPATH) 
+		help='Output JSON file to store the trained model.',default=DEFAULT_MODEL_FILEPATH) 
 	parser.add_argument('-t', '--modelType', action='store', type=str,
         help='We implemented two model structures, you can specify: A (Lecun-Bottou) or B (Cirstea-Likforman).',default='A')
 
 	args = parser.parse_args()
-	
-	return args.model, args.weights, args.nEpochs, args.modelType
+	return args.model, args.nEpochs, args.modelType
 
 '''
 main
@@ -112,7 +109,7 @@ main
 if '__main__' == __name__:
 
 	# read argument choices
-	[model_path, weights_path, num_epochs, model_type] = parse_args()
+	[model_path, num_epochs, model_type] = parse_args()
 
 	# determine the input shape
 	print('Image data format: '+ keras.backend.image_data_format())
