@@ -83,14 +83,6 @@ def train_weights(model, X_train, X_test, Y_train, Y_test, nEpochs, myCallbacks)
 		validation_data=(X_test, Y_test),
         callbacks=myCallbacks)
 
-def save_model(model, output_model_filepath, output_weights_filepath):
-
-	model.save(output_model_filepath)
-	model.save_weights(output_weights_filepath)
-
-	if DEFAULT_DEBUG_FLAG:
-		print("Saved model to disk.")
-
 def parse_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-n', '--nEpochs', action='store', type=int,
@@ -145,4 +137,4 @@ if '__main__' == __name__:
 	plt.savefig(DEFAULT_OUTPUT_DIRECTORY+'/training.png')
 
 	# save model
-	save_model(model, model_path, weights_path)
+	model.save(model_path)
