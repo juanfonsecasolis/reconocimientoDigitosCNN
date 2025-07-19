@@ -71,12 +71,6 @@ def get_formated_mnist_data():
 	X_train_curated, Y_train_curated = format_data(X_train, Y_train)
 	X_test_curated, Y_test_curated = format_data(X_test, Y_test)
 
-	if DEFAULT_DEBUG_FLAG:
-		print('Examples of MNIST labels:')
-		for i in range(5):	# five examples
-			print(Y_train[i])
-			print(Y_train_curated[i])
-
 	return X_train_curated, X_test_curated, Y_train_curated, Y_test_curated
 
 def train_weights(model, X_train, X_test, Y_train, Y_test, nEpochs, myCallbacks):

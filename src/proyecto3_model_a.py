@@ -1,5 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
+from proyecto3_utils import *
 
 def create_model_a(input_shape, nb_classes):
 	'''
@@ -40,8 +41,8 @@ def create_model_a(input_shape, nb_classes):
 
 	# compile and return
 	model.compile(
-		loss='categorical_crossentropy',
-		optimizer='adadelta', # an adaptive learning rate method
-		metrics=['accuracy'])
+		loss=DEFAULT_LOSS_FUNCTION,
+		optimizer=DEFAULT_OPTIMIZER,
+		metrics=DEFAULT_METRICS)
 	
 	return model

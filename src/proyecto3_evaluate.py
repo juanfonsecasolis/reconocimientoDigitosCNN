@@ -80,15 +80,19 @@ Main
 if '__main__' == __name__:
 
 	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
+	if DEFAULT_DEBUG_FLAG:
+		print('Saving some MNIST testing images...')
+		for i in range(5):
+			print(Y_train[i])
+	
 	[model_path, weights_path, image_filepath] = parse_args()
 	model = keras.models.load_model(model_path)
 
 	# evaluate loaded model on test data
 	model.compile(
-		loss='categorical_crossentropy',
-		#optimizer='adam',
-		optimizer='adadelta',
-		metrics=['accuracy'])
+		loss=DEFAULT_LOSS_FUNCTION,
+		optimizer=DEFAULT_OPTIMIZER,
+		metrics=DEFAULT_METRICS)
 
 	if('none'==image_filepath):
 		print('Executing benchmark...')
@@ -97,5 +101,5 @@ if '__main__' == __name__:
 		unknown_image, _ = format_data(
 			np.array(load_image(image_filepath)), 
 			None,
-			normalize_data = True)
+			normalize_data = False)
 		timed_predict(model, unknown_image)

@@ -144,10 +144,9 @@ if '__main__' == __name__:
 
 	# evaluate loaded model on test data
 	model.compile(
-		loss='categorical_crossentropy',
-		#optimizer='adam',
-		optimizer='adadelta',
-		metrics=['accuracy'])
+		loss=DEFAULT_LOSS_FUNCTION,
+		optimizer=DEFAULT_OPTIMIZER,
+		metrics=DEFAULT_METRICS)
 
 	# compute the confusion matrix and associated metrics
 	compute_confusion_matrix(model, X_test, Y_test)
