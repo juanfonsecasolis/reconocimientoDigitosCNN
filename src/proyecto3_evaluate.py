@@ -86,7 +86,8 @@ if '__main__' == __name__:
 	# evaluate loaded model on test data
 	model.compile(
 		loss='categorical_crossentropy',
-		optimizer='adam',
+		#optimizer='adam',
+		optimizer='adadelta',
 		metrics=['accuracy'])
 
 	if('none'==image_filepath):
