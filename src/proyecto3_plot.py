@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     # 3) Visualize convolution result (after activation)
     [X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
-    [Y, X] = [ Y_test[15], X_test[15 ]]
+    [Y, X] = [ Y_test[15], X_test[15]]
 
     # convout1_f = keras.backend.function([model.layers[0].input], model.layers[1].output)
     convout1_f = model.predict([model.layers[0].input], model.layers[1].output)

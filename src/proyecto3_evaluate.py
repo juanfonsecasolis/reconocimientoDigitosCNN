@@ -15,17 +15,11 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import argparse
 import time
-
-def print_image(img):
-	plt.imshow(img)
-	plt.show()
 	
 def load_image(imagepath):
 	im = Image.open(imagepath)
 	A = np.array(im)
 	A = np.array([np.array([A])])
-	if DEFAULT_DEBUG_FLAG:
-		print_image(im)
 	return A
 
 def parse_args():
@@ -54,6 +48,7 @@ def execute_benchmark(model, X_test, Y_test):
 		times.append(elapsed)
 		if(np.sum(np.subtract(desired, obtained)) < 0.5):
 			TP += 1 
+		
 	print('Accuracy: %f' % (TP/I))
 	print('Averaged time (%i samples): %f (ms)' % (I, np.mean(times)))
 
@@ -66,12 +61,16 @@ def timed_predict(model, image):
 	if DEFAULT_DEBUG_FLAG:
 		print('Output:')
 		print(result)
+		print('Identified digit: ' + str(np.argmax(result)))
 		print('Classification time: %d (ms)' % elapsed)
+		plt.subplot(121)
 		plt.stem(result[0])
-		plt.xlabel('Number')
-		plt.ylabel('Classification certainty')
-		plt.title('Classification for input image.')
-		plt.plot()
+		plt.xlabel('Digit')
+		plt.ylabel('Certainty')
+		plt.title('Classification')
+		plt.subplot(122)
+		plt.imshow(image[0], cmap='Greys')
+		plt.savefig(DEFAULT_EVALUATION_RESULT_FILEPATH)
 
 	return elapsed, result 
 

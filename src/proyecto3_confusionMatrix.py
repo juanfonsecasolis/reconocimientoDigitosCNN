@@ -9,9 +9,11 @@
 from __future__ import print_function
 from proyecto3_evaluate import *
 from proyecto3_utils import *
+from proyecto3_train import get_formated_mnist_data
+import keras
 
 NUM_DIGITS_MNIST = 10
-C = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
+confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST))
 
 def parse_args():
 	parser = argparse.ArgumentParser()
@@ -21,17 +23,17 @@ def parse_args():
         help='H5 file containing the pretrained weights',default=DEFAULT_WEIGHTS_FILEPATH) 
 
 	args = parser.parse_args()
-	
 	return args.model, args.weights 
 
 def compute_confusion_matrix(model, X_test, Y_test):
+	
 	N = len(X_test)
 	for i in range(N):
-		[y_true, x] = get_train_images_mnist(i,X_test,Y_test)
+		y_true, x = Y_test[i], X_test[i]
 		y_pred = model.predict(x)
 		i = int(np.argmax(y_pred))
 		j = int(np.argmax(y_true))
-		C[i][j] += 1
+		confusion_matrix[i][j] += 1
 
 	# print confusion matrix
 	print('\nConfusion Matrix',end='\n\t')
@@ -41,9 +43,9 @@ def compute_confusion_matrix(model, X_test, Y_test):
 	for i in range(NUM_DIGITS_MNIST):
 		print(str(i)+':',end='\t')
 		for j in range(NUM_DIGITS_MNIST):
-			print(C[i][j], end='\t')
+			print(confusion_matrix[i][j], end='\t')
 		print('')
-	print('\nTotal samples analyzed: ' + str(np.sum(C)),end='\n')
+	print('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)),end='\n')
 
 def compute_and_print_metrics():
 	print('\nMetrics per category:')
@@ -61,7 +63,7 @@ def compute_and_print_metrics():
 
 	for i in range(NUM_DIGITS_MNIST): 	
 		print('* Category '+str(i)+': ',end='')
-		TP = C[i][i] # TP = A[0,0] = C[i,i] 
+		TP = confusion_matrix[i][i] # TP = A[0,0] = C[i,i] 
 		FP = 0
 		FN = 0
 		K = range(NUM_DIGITS_MNIST)
@@ -78,11 +80,11 @@ def compute_and_print_metrics():
 		# |Not i |       FP        |         TN          |
 		#
 		for k in K:
-			FN += C[i,k] # FN = A[0,1] = sum_{k!=i}{ C[i,k] }
-			FP += C[k,i] # FP = A[1,0] = sum_{k!=i}{ C[k,i] } 			
+			FN += confusion_matrix[i,k] # FN = A[0,1] = sum_{k!=i}{ C[i,k] }
+			FP += confusion_matrix[k,i] # FP = A[1,0] = sum_{k!=i}{ C[k,i] } 			
 			TN = 0
 			for j in J:
-				TN += C[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
+				TN += confusion_matrix[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
 
 		print('TP=' + str(TP) + ', ', end='')
 		print('FP=' + str(FP) + ', ', end='')
@@ -138,7 +140,7 @@ Main
 if '__main__' == __name__:
 	[X_train, X_test, Y_train, Y_test] = get_formated_mnist_data()
 	[model_path, weights_path] = parse_args()
-	model = load_model(model_path, weights_path)
+	model = keras.models.load_model(model_path)
 
 	# evaluate loaded model on test data
 	model.compile(
