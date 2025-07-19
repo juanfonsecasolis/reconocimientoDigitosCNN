@@ -51,7 +51,7 @@ def execute_benchmark(model, X_test, Y_test):
 	print('Accuracy: %f' % (TP/I))
 	print('Averaged time (%i samples): %f (ms)' % (I, np.mean(times)))
 
-def timed_predict(model, image):
+def timed_predict(model, image, image_name):
 	start = int(round(time.time() * 1000))
 	result = model.predict(image)
 	end = int(round(time.time() * 1000))
@@ -69,7 +69,7 @@ def timed_predict(model, image):
 		plt.title('Classification')
 		plt.subplot(122)
 		plt.imshow(image[0], cmap='Greys')
-		plt.savefig(DEFAULT_EVALUATION_RESULT_FILEPATH)
+		plt.savefig(DEFAULT_OUTPUT_DIRECTORY + '/classification_' +  image_name + '.png')
 
 	return elapsed, result 
 
@@ -101,4 +101,4 @@ if '__main__' == __name__:
 			np.array(load_image(image_filepath)), 
 			None,
 			normalize_data = True)
-		timed_predict(model, unknown_image)
+		timed_predict(model, unknown_image, image_filepath.split('/')[-1])

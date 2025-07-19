@@ -20,8 +20,8 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 	N = len(X_test)
 	for i in range(N):
 		y_true, x = Y_test[i], X_test[i]
-		print('X shape: ' + str(x.shape))
-		print('Model input shape: ' + str(model.input_shape))
+		# print('X shape: ' + str(x.shape))
+		# print('Model input shape: ' + str(model.input_shape))
 		y_pred = model.predict(x.reshape(-1, IMG_ROWS, IMG_COLS, NUM_CHANNELS))
 		i = int(np.argmax(y_pred))
 		j = int(np.argmax(y_true))
