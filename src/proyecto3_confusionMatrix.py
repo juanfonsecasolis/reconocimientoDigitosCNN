@@ -58,10 +58,12 @@ def compute_and_print_metrics():
 		TP = confusion_matrix[i][i] # TP = A[0,0] = C[i,i] 
 		FP = 0
 		FN = 0
-		K = range(NUM_DIGITS_MNIST)
-		K.remove(i)
-		J = range(NUM_DIGITS_MNIST)
-		J.remove(i)
+		K = list(range(NUM_DIGITS_MNIST))
+		# K.remove(i)
+		del K[i]
+		J = list(range(NUM_DIGITS_MNIST))
+		# J.remove(i)
+		del J[i]
 
 		# Split the multiclass recognition problem into identification problem
 		# by fixing the category in each iteration

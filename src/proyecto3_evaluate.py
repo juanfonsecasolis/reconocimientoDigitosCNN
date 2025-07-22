@@ -101,4 +101,7 @@ if '__main__' == __name__:
 			np.array(load_image(image_filepath)), 
 			None,
 			normalize_data = True)
-		timed_predict(model, unknown_image, image_filepath.split('/')[-1])
+		timed_predict(
+			model, 
+			unknown_image, 
+			image_name=image_filepath.split('/')[-1])
