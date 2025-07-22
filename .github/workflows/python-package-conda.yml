@@ -28,3 +28,8 @@ jobs:
         python3 proyecto3_train.py -n 3 -t C
         python proyecto3_evaluate.py -i ../data/one.bmp
         python proyecto3_confusionMatrix.py
+    - uses: actions/upload-artifact@v4
+      with:
+        name: output
+        path: output/
+        retention-days: 90
