@@ -30,6 +30,8 @@ jobs:
       run: |
         cd src
         python proyecto3_evaluate.py -i ../data/one.bmp
+        python proyecto3_evaluate.py -i ../data/five.bmp
+        python proyecto3_evaluate.py -i ../data/five_inverted.bmp
     - name: Compute confusion matrix
       run: |
         cd src
