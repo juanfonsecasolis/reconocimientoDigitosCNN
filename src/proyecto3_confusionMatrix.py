@@ -15,7 +15,7 @@ NUM_DIGITS_MNIST = 10
 confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST)) 
 
 def log(text):
-	with open(DEFAULT_METRICS_FILEPATH, 'rw') as file:
+	with open(DEFAULT_METRICS_FILEPATH, 'w') as file:
 		file.write(text + '\n')
 
 def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
