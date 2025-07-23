@@ -6,7 +6,6 @@
 # Referencias:
 # - https://stats.stackexchange.com/questions/51296/how-do-you-calculate-precision-and-recall-for-multiclass-classification-using-co
 
-from __future__ import log_function
 from proyecto3_evaluate import *
 from proyecto3_utils import *
 from proyecto3_train import get_formated_mnist_data
