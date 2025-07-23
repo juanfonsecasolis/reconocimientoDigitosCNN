@@ -29,16 +29,16 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 		confusion_matrix[i][j] += 1
 
 	# log confusion matrix
-	log('\nConfusion Matrix',end='\n\t')
+	log('\nConfusion Matrix\n\t')
 	for i in range(NUM_DIGITS_MNIST):
-		log(str(i),end='\t')
+		log(str(i)+'\t')
 	log('')
 	for i in range(NUM_DIGITS_MNIST):
-		log(str(i)+':',end='\t')
+		log(str(i)+':'+'\t')
 		for j in range(NUM_DIGITS_MNIST):
-			log(confusion_matrix[i][j], end='\t')
+			log(str(confusion_matrix[i][j])+'\t')
 		log('')
-	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)),end='\n')
+	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
 
 def compute_and_log_metrics():
 	log('\nMetrics per category:')
@@ -55,7 +55,7 @@ def compute_and_log_metrics():
 	max_precision = 0
 
 	for i in range(NUM_DIGITS_MNIST): 	
-		log('* Category '+str(i)+': ',end='')
+		log('* Category '+str(i)+': ')
 		TP = confusion_matrix[i][i] # TP = A[0,0] = C[i,i] 
 		FP = 0
 		FN = 0
@@ -81,10 +81,10 @@ def compute_and_log_metrics():
 			for j in J:
 				TN += confusion_matrix[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
 
-		log('TP=' + str(TP) + ', ', end='')
-		log('FP=' + str(FP) + ', ', end='')
-		log('FN=' + str(FN) + ', ', end='')
-		log('TN=' + str(TN) + ', ', end='\n')
+		log('TP=' + str(TP))
+		log('FP=' + str(FP))
+		log('FN=' + str(FN))
+		log('TN=' + str(TN))
 		[sensitivity, specificity, precision] = calculate_and_log_advanced_metrics(TP,FP,TN,FN)
 		TPS.append(TP)
 		FPS.append(FP)
@@ -104,10 +104,10 @@ def compute_and_log_metrics():
 	mFN = np.mean(FNS)
 
 	log('\nAverage:')
-	log('TP=' + str(mTP) + ', ', end='')
-	log('FP=' + str(mFP) + ', ', end='')
-	log('TN=' + str(mTN) + ', ', end='')
-	log('FN=' + str(mFN) + ', ', end='')
+	log('TP=' + str(mTP))
+	log('FP=' + str(mFP))
+	log('TN=' + str(mTN))
+	log('FN=' + str(mFN))
 	log('')
 	calculate_and_log_advanced_metrics(mTP, mFP, mTN, mFN)
 
