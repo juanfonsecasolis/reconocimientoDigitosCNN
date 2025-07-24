@@ -32,8 +32,9 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 
 	# header
 	log('# Confusion Matrix')
+	log('  \t')
 	for i in range(NUM_DIGITS_MNIST):
-		log(str(i)+'\t')
+		log(str(i)+'|\t', end='')
 	log('') # new line
 
 	# rows
@@ -43,7 +44,7 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 			log(str(confusion_matrix[i][j])+'\t', end='')
 		log('')	# new line
 
-	log('Total samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
+	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
 
 def compute_and_log_metrics():
 	log('# Metrics per category:')
