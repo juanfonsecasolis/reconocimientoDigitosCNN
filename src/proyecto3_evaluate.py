@@ -58,15 +58,16 @@ def timed_predict(model, image, image_name):
 	elapsed = end-start
 
 	if DEFAULT_DEBUG_FLAG:
+		recognized_digit = str(np.argmax(result))
 		print('Output:')
 		print(result)
-		print('Identified digit: ' + str(np.argmax(result)))
+		print('Identified digit: ' + recognized_digit)
 		print('Classification time: %d (ms)' % elapsed)
 		plt.subplot(121)
 		plt.stem(result[0])
 		plt.xlabel('Digit')
 		plt.ylabel('Certainty')
-		plt.title('Classification')
+		plt.title('Classification: ' + recognized_digit)
 		plt.subplot(122)
 		plt.imshow(image[0], cmap='Greys')
 		plt.savefig(DEFAULT_OUTPUT_DIRECTORY + '/classification_' +  image_name + '.png')

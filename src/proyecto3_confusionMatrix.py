@@ -14,9 +14,9 @@ import keras
 NUM_DIGITS_MNIST = 10
 confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST)) 
 
-def log(text):
+def log(text, end='\n'):
 	with open(DEFAULT_METRICS_FILEPATH, 'a') as file:
-		file.write(text + '\n')
+		file.write(text + end)
 
 def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 	
@@ -29,19 +29,24 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 		confusion_matrix[i][j] += 1
 
 	# log confusion matrix
-	log('\nConfusion Matrix\n\t')
+
+	# header
+	log('# Confusion Matrix')
 	for i in range(NUM_DIGITS_MNIST):
 		log(str(i)+'\t')
-	log('')
+	log('') # new line
+
+	# rows
 	for i in range(NUM_DIGITS_MNIST):
-		log(str(i)+':'+'\t')
+		log(str(i)+':'+'\t', end='')
 		for j in range(NUM_DIGITS_MNIST):
-			log(str(confusion_matrix[i][j])+'\t')
-		log('')
-	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
+			log(str(confusion_matrix[i][j])+'\t', end='')
+		log('')	# new line
+
+	log('Total samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
 
 def compute_and_log_metrics():
-	log('\nMetrics per category:')
+	log('# Metrics per category:')
 	TPS = []
 	FPS = []
 	FNS = []
@@ -55,15 +60,13 @@ def compute_and_log_metrics():
 	max_precision = 0
 
 	for i in range(NUM_DIGITS_MNIST): 	
-		log('* Category '+str(i)+': ')
+		log('Category '+str(i)+': ')
 		TP = confusion_matrix[i][i] # TP = A[0,0] = C[i,i] 
 		FP = 0
 		FN = 0
 		K = list(range(NUM_DIGITS_MNIST))
-		# K.remove(i)
 		del K[i]
 		J = list(range(NUM_DIGITS_MNIST))
-		# J.remove(i)
 		del J[i]
 
 		# Split the multiclass recognition problem into identification problem
@@ -80,11 +83,13 @@ def compute_and_log_metrics():
 			TN = 0
 			for j in J:
 				TN += confusion_matrix[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
+		
+		log('* TP =' + str(TP), end='')
+		log('* FP =' + str(FP), end='')
+		log('* FN =' + str(FN), end='')
+		log('* TN =' + str(TN), end='')
+		log('')
 
-		log('TP=' + str(TP))
-		log('FP=' + str(FP))
-		log('FN=' + str(FN))
-		log('TN=' + str(TN))
 		[sensitivity, specificity, precision] = calculate_and_log_advanced_metrics(TP,FP,TN,FN)
 		TPS.append(TP)
 		FPS.append(FP)
@@ -103,29 +108,29 @@ def compute_and_log_metrics():
 	mTN = np.mean(TNS)
 	mFN = np.mean(FNS)
 
-	log('\nAverage:')
-	log('TP=' + str(mTP))
-	log('FP=' + str(mFP))
-	log('TN=' + str(mTN))
-	log('FN=' + str(mFN))
+	log('Average:')
+	log('* TP =' + str(mTP), end='')
+	log('* FP =' + str(mFP), end='')
+	log('* TN =' + str(mTN), end='')
+	log('* FN =' + str(mFN), end='')
 	log('')
-	calculate_and_log_advanced_metrics(mTP, mFP, mTN, mFN)
 
+	calculate_and_log_advanced_metrics(mTP, mFP, mTN, mFN)
 	log('Min/max')
-	log('Min sensitivity = ' + str(min_sensitivity))
-	log('Min specificity = ' + str(min_specificity))
-	log('Min precision = ' + str(min_precision))
-	log('Max sensitivity = ' + str(max_sensitivity))
-	log('Max specificity = ' + str(max_specificity))
-	log('Max precision = ' + str(max_precision))
+	log('* Min sensitivity = ' + str(min_sensitivity))
+	log('* Min specificity = ' + str(min_specificity))
+	log('* Min precision = ' + str(min_precision))
+	log('* Max sensitivity = ' + str(max_sensitivity))
+	log('* Max specificity = ' + str(max_specificity))
+	log('* Max precision = ' + str(max_precision))
 
 def calculate_and_log_advanced_metrics(TP,FP,TN,FN):
 	sensitivity = TP/(TP+FN)
 	specificity = TN/(TN+FP)
 	precision = TP/(TP+FP)
-	log('Sensitivity = '+str(sensitivity))
-	log('Specificity = '+str(specificity))
-	log('Precision = '+str(precision))
+	log('* Sensitivity = '+str(sensitivity))
+	log('* Specificity = '+str(specificity))
+	log('* Precision = '+str(precision))
 	log('')
 	return sensitivity, specificity, precision
 
