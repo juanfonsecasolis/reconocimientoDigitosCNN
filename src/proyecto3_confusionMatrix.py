@@ -89,10 +89,10 @@ def compute_and_log_metrics():
 			for j in J:
 				TN += confusion_matrix[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
 		
-		log('* TP =' + str(TP), end='')
-		log('* FP =' + str(FP), end='')
-		log('* FN =' + str(FN), end='')
-		log('* TN =' + str(TN), end='')
+		log('TP =' + str(TP), end=', ')
+		log('FP =' + str(FP), end=', ')
+		log('FN =' + str(FN), end=', ')
+		log('TN =' + str(TN), end=', ')
 		log('')
 
 		[sensitivity, specificity, precision] = calculate_and_log_advanced_metrics(TP,FP,TN,FN)
@@ -121,13 +121,15 @@ def compute_and_log_metrics():
 	log('')
 
 	calculate_and_log_advanced_metrics(mTP, mFP, mTN, mFN)
-	log('Min/max')
-	log('* Min sensitivity = ' + str(min_sensitivity))
-	log('* Min specificity = ' + str(min_specificity))
-	log('* Min precision = ' + str(min_precision))
-	log('* Max sensitivity = ' + str(max_sensitivity))
-	log('* Max specificity = ' + str(max_specificity))
-	log('* Max precision = ' + str(max_precision))
+	log('Min')
+	log('* Sensitivity = ' + str(min_sensitivity))
+	log('* Specificity = ' + str(min_specificity))
+	log('* Precision = ' + str(min_precision))
+
+	log('Max')
+	log('* Sensitivity = ' + str(max_sensitivity))
+	log('* Specificity = ' + str(max_specificity))
+	log('* Precision = ' + str(max_precision))
 
 def calculate_and_log_advanced_metrics(TP,FP,TN,FN):
 	sensitivity = TP/(TP+FN)
