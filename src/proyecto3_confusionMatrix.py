@@ -10,6 +10,7 @@ from proyecto3_evaluate import *
 from proyecto3_utils import *
 from proyecto3_train import get_formated_mnist_data
 import keras
+import pandas as pd
 
 NUM_DIGITS_MNIST = 10
 confusion_matrix = np.zeros((NUM_DIGITS_MNIST,NUM_DIGITS_MNIST)) 
@@ -32,17 +33,20 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 
 	# header
 	log('# Confusion Matrix')
-	log('  \t')
-	for i in range(NUM_DIGITS_MNIST):
-		log(str(i)+'|\t', end='')
-	log('') # new line
+	
+	#log('  \t')
+	#for i in range(NUM_DIGITS_MNIST):
+	#	log(str(i)+'|\t', end='')
+	#log('') # new line
 
 	# rows
-	for i in range(NUM_DIGITS_MNIST):
-		log(str(i)+':'+'\t', end='')
-		for j in range(NUM_DIGITS_MNIST):
-			log(str(confusion_matrix[i][j])+'\t', end='')
-		log('')	# new line
+	#for i in range(NUM_DIGITS_MNIST):
+	#	log(str(i)+':'+'\t', end='')
+	#	for j in range(NUM_DIGITS_MNIST):
+	#		log(str(confusion_matrix[i][j])+'\t', end='')
+	#	log('')	# new line
+
+	log(str(pd.DataFrame(x)))
 
 	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
 
