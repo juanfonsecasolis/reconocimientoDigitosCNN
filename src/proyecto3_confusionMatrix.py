@@ -33,28 +33,13 @@ def compute_confusion_matrix(model: keras.Sequential, X_test, Y_test):
 		confusion_matrix[i][j] += 1
 
 	# log confusion matrix
-
-	# header
 	log('# Confusion Matrix')
-	
-	#log('  \t')
-	#for i in range(NUM_DIGITS_MNIST):
-	#	log(str(i)+'|\t', end='')
-	#log('') # new line
-
-	# rows
-	#for i in range(NUM_DIGITS_MNIST):
-	#	log(str(i)+':'+'\t', end='')
-	#	for j in range(NUM_DIGITS_MNIST):
-	#		log(str(confusion_matrix[i][j])+'\t', end='')
-	#	log('')	# new line
-
-	log(str(pd.DataFrame(x)))
+	log(str(pd.DataFrame(confusion_matrix)))
 
 	log('\nTotal samples analyzed: ' + str(np.sum(confusion_matrix)) + '\n')
 
 def compute_and_log_metrics():
-	log('# Metrics per category:')
+	log('# Metrics per category:\n')
 	TPS = []
 	FPS = []
 	FNS = []
@@ -92,11 +77,10 @@ def compute_and_log_metrics():
 			for j in J:
 				TN += confusion_matrix[j,k] # TN = A[1,1] = sum_{k!=i}{ sum_{j!=i}{ C[j,k] } }	
 		
-		log('TP =' + str(TP), end=', ')
-		log('FP =' + str(FP), end=', ')
-		log('FN =' + str(FN), end=', ')
-		log('TN =' + str(TN), end=', ')
-		log('')
+		log('* TP = ' + str(TP), end=', ')
+		log('FP = ' + str(FP), end=', ')
+		log('FN = ' + str(FN), end=', ')
+		log('TN = ' + str(TN))
 
 		[sensitivity, specificity, precision] = calculate_and_log_advanced_metrics(TP,FP,TN,FN)
 		TPS.append(TP)
@@ -117,11 +101,10 @@ def compute_and_log_metrics():
 	mFN = np.mean(FNS)
 
 	log('Average:')
-	log('* TP =' + str(mTP), end='')
-	log('* FP =' + str(mFP), end='')
-	log('* TN =' + str(mTN), end='')
-	log('* FN =' + str(mFN), end='')
-	log('')
+	log('* TP = ' + str(mTP), end=', ')
+	log('FP = ' + str(mFP), end=', ')
+	log('TN = ' + str(mTN), end=', ')
+	log('FN = ' + str(mFN))
 
 	calculate_and_log_advanced_metrics(mTP, mFP, mTN, mFN)
 	log('Min')
@@ -129,7 +112,7 @@ def compute_and_log_metrics():
 	log('* Specificity = ' + str(min_specificity))
 	log('* Precision = ' + str(min_precision))
 
-	log('Max')
+	log('\nMax')
 	log('* Sensitivity = ' + str(max_sensitivity))
 	log('* Specificity = ' + str(max_specificity))
 	log('* Precision = ' + str(max_precision))
