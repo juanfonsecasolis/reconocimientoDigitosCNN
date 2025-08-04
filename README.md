@@ -1,7 +1,7 @@
 # reconocimientoDigitosCNN
 2021 - Luis Jimenez, Juan M. Fonseca (last updated on July 2025).
 
-[![Python Package using Conda](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml)
+[![Keras Tensorflow](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml)
 
 Code to replicate the results published on the paper [Reconocimiento de dígitos escritos a mano usando aprendizaje profundo](https://www.academia.edu/40196440/Reconocimiento_de_d%C3%ADgitos_escritos_a_mano_usando_aprendizaje_profundo) of the course MP6127.
 
