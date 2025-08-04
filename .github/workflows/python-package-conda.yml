@@ -25,7 +25,7 @@ jobs:
     - name: Train the CNN
       run: |
         cd src
-        python3 proyecto3_train.py -n 3 -t C
+        python3 proyecto3_train.py -n 3 -t B
     - name: Evaluate one example
       run: |
         cd src
