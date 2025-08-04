@@ -1,11 +1,21 @@
+# -*- coding: utf-8 -*-
+# Adapted by Luis Jimenez, Juan Fonseca (2017)
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_model_c.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
+# ** Note: **
+# The code of this specific file is not ours, it was taken from Elite Data Science.
+# URL: https://elitedatascience.com/keras-tutorial-deep-learning-in-python
+#
+
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
 from proyecto3_utils import *
 
 def create_model_c(input_shape, nb_classes, nb_filters, nb_conv, nb_pool):
-	'''
-	This code is not ours, it was taken from: https://elitedatascience.com/keras-tutorial-deep-learning-in-python
-	'''
 	model = Sequential()
 	model.add(Convolution2D(
 		nb_filters, # number of convolution filters to use

@@ -3,6 +3,9 @@
 # Course: Visión por computadora, prof. P. Alvarado ITCR
 # File: proyecto3_confusionMatrix.py
 # 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
 # Referencias:
 # - https://stats.stackexchange.com/questions/51296/how-do-you-calculate-precision-and-recall-for-multiclass-classification-using-co
 

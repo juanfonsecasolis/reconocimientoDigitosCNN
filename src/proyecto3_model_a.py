@@ -1,12 +1,23 @@
+# -*- coding: utf-8 -*-
+# Adapted by Luis Jimenez, Juan Fonseca (2017)
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_model_a.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
+# ** Note: **
+# The code of this specific file is not ours, it was taken from Adrian Rosebrock's blog
+# at PyImageSearch (August 20116). URL: http://www.pyimagesearch.com/2016/08/01/lenet-convolutional-neural-network-in-python/.
+#
+
 from keras.models import Sequential
-from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
+from keras.layers import Convolution2D, MaxPooling2D, Dense, Activation, Flatten
 from proyecto3_utils import *
 
 def create_model_a(input_shape, nb_classes):
 	'''
-	Lecun structure (LeNet-5)
-	This code is not ours, it was taken from: http://www.pyimagesearch.com/2016/08/01/lenet-convolutional-neural-network-in-python/
-	Mentioned by: Ghaffari-Sharifian structure
+	Lecun structure (LeNet-5) proposed by Ghaffari-Sharifian.
 	'''
 	model = Sequential()
 

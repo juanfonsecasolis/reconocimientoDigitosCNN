@@ -2,11 +2,14 @@
 # Authors: 2017 Luis Jimenez, Juan Fonseca
 # Course: Visión por computadora, prof. P. Alvarado ITCR
 # File: utils.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
 
 import keras
 
 IMG_ROWS, IMG_COLS, NUM_CHANNELS = 28, 28, 1 # dimensions and number of channels of the input images
-
 DEFAULT_OUTPUT_DIRECTORY = '../output'
 DEFAULT_MODEL_FILEPATH = DEFAULT_OUTPUT_DIRECTORY + '/model.keras'
 DEFAULT_WEIGHTS_FILEPATH = DEFAULT_OUTPUT_DIRECTORY + '/model.weights.h5'

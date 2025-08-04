@@ -2,6 +2,9 @@
 # Authors: 2017 Luis Jimenez, Juan Fonseca
 # Course: Visión por computadora, prof. P. Alvarado ITCR
 # File: proyecto3_train.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
 #
 # References: 
 # - https://raw.githubusercontent.com/gradientzoo/python-gradientzoo/master/examples/keras_mnist.py

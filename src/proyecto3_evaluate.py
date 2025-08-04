@@ -3,6 +3,9 @@
 # Course: Visión por computadora, prof. P. Alvarado ITCR
 # File: proyecto3_evaluate.py
 # 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
 # Referencias: 
 # - http://machinelearningmastery.com/save-load-keras-deep-learning-models/
 # - https://keras.io/models/model/

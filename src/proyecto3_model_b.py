@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+# Adapted by Luis Jimenez, Juan Fonseca (2017)
+# Course: Visión por computadora, prof. P. Alvarado ITCR
+# File: proyecto3_model_b.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
+#
+# ** Note: **
+# This code is an adaptation made by us of Adrian Rosebrock's code (PyImageSearch August 20116, URL: http://www.pyimagesearch.com/2016/08/01/lenet-convolutional-neural-network-in-python/)
+# to use the Cîrstea-Likforman structure.
+#
+
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout, Activation, Flatten
 from proyecto3_utils import *

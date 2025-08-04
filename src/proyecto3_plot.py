@@ -2,6 +2,9 @@
 # Authors: 2017 Luis Jimenez, Juan Fonseca
 # Course: Visión por computadora, prof. P. Alvarado ITCR
 # File: proyecto3_plot.py
+# 
+# Changes:
+# * July 2025 by Juan Fonseca. Migrated code from Keras (standalone) to the new API of Tensorflow.
 #
 # References: 
 # - https://keras.io/visualization/
