@@ -1,5 +1,5 @@
 # reconocimientoDigitosCNN
-2021 - Luis Jimenez, Juan M. Fonseca (last updated on July 2025).
+2021 - Luis Jimenez, Juan M. Fonseca (last updated on July 2025 to use the new Tensorflow's API that includes Keras).
 
 [![Keras Tensorflow](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/juanfonsecasolis/reconocimientoDigitosCNN/actions/workflows/python-package-conda.yml)
 
